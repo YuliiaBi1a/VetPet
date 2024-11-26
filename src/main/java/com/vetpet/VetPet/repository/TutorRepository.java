@@ -1,4 +1,4 @@
-package repository;
+package com.vetpet.VetPet.repository;
 
 import com.vetpet.VetPet.Tutor;
 import org.springframework.data.jpa.repository.JpaRepository;
