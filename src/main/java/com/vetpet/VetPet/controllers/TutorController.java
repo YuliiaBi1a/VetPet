@@ -21,7 +21,7 @@ public class TutorController {
     }
 
     @GetMapping
-    public List<Tutor> GetTutorsList() {
+    public List<Tutor> getTutorsList() {
         return TUTOR_REPOSITORY.findAll();
     }
 
@@ -35,7 +35,7 @@ public class TutorController {
     }
 
     @PostMapping
-    public ResponseEntity<?> postTutor(@RequestBody Tutor tutor){
+    public ResponseEntity<?> createTutor(@RequestBody Tutor tutor){
         Optional<Tutor> optionalTutor = TUTOR_REPOSITORY.findByPhoneNumber(tutor.getPhoneNumber());
         if (optionalTutor.isPresent()){
             return new ResponseEntity<>( "Este teléfono ya esta asociado a un tutor existente. Pertenece a " + tutor.getName() + " " + tutor.getSurname(), HttpStatus.CONFLICT);
