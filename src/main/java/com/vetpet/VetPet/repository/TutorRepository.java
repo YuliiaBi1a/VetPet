@@ -7,4 +7,7 @@ import java.util.Optional;
 
 public interface TutorRepository extends JpaRepository <Tutor,Long>{
     Optional<Tutor> findByName(String name);
+
+    Optional<Tutor> findByPhoneNumber(int phoneNumber);
 }
+
