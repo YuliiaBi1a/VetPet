@@ -29,7 +29,7 @@ public class PostTutorTest {
 //given
 
 
-            Tutor tutor = new Tutor("John","gimenez",123456789);
+            Tutor tutor = new Tutor("John","Gimenez",123456789);
 
         //when then
 
@@ -38,7 +38,7 @@ public class PostTutorTest {
                         .content(objectMapper.writeValueAsString(tutor))) // Envía el JSON directamente como cadena
                 .andExpect(status().isCreated()) // Espera un 201 CREATED
                 .andExpect(jsonPath("$.name").value("John")) // Verifica que el nombre sea el esperado
-                .andExpect(jsonPath("$.surname").value("gimenez")) // Verifica el email
+                .andExpect(jsonPath("$.surname").value("Gimenez")) // Verifica el email
                 .andExpect(jsonPath("$.phoneNumber").value(123456789));
 
     }
