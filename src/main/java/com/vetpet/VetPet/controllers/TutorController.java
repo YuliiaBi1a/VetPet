@@ -43,6 +43,20 @@ public class TutorController {
         Tutor newTutor = TUTOR_REPOSITORY.save(tutor);
         return new ResponseEntity<>(newTutor,HttpStatus.CREATED);
     }
+@PutMapping("/{id}")
+    public ResponseEntity<?>updateTutorId(@PathVariable Long id,@RequestBody Tutor updateTutor) {
+       Optional<Tutor> optionalTutor = TUTOR_REPOSITORY.findById(id);
+       if (optionalTutor.isEmpty()) {
+           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }
+       Tutor basetutor = optionalTutor.get();
+       basetutor.setName(updateTutor.getName());
+       basetutor.setSurname(updateTutor.getSurname());
+       basetutor.setPhoneNumber(updateTutor.getPhoneNumber());
+    TUTOR_REPOSITORY.save(basetutor);
+    return new ResponseEntity<>(" Tutor has been updated.",HttpStatus.OK);
+
+}
 
 
 }
