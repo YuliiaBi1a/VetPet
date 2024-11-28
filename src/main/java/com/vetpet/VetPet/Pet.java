@@ -66,8 +66,8 @@ public class Pet {
         this.id = id;
     }
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
-    private Pet pet;
+    @JoinColumn(name = "tutor_id", nullable = false)
+    private Tutor tutor;
 
 
 }
