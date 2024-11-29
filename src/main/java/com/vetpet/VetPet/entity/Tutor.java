@@ -1,4 +1,4 @@
-package com.vetpet.VetPet;
+package com.vetpet.VetPet.entity;
 
 import jakarta.persistence.*;
 

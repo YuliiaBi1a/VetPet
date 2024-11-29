@@ -1,6 +1,6 @@
 package com.vetpet.VetPet.controllers;
 
-import com.vetpet.VetPet.Tutor;
+import com.vetpet.VetPet.entity.Tutor;
 import com.vetpet.VetPet.repository.TutorRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.vetpet.VetPet;
+package com.vetpet.VetPet.entity;
 
 
 import jakarta.persistence.*;
@@ -15,6 +15,10 @@ public class Pet {
     private int age;
     private String breed;
     private String class_species;
+
+    @ManyToOne
+    @JoinColumn(name = "tutor_id", nullable = false)
+    private Tutor tutor;
 
     public Pet() {
     }
@@ -65,9 +69,8 @@ public class Pet {
     public void setId(Long id) {
         this.id = id;
     }
-    @ManyToOne
-    @JoinColumn(name = "tutor_id", nullable = false)
-    private Tutor tutor;
+
+
 
 
 }

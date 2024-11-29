@@ -1,6 +1,6 @@
 package com.vetpet.VetPet.controllers.tutoracceptancetest;
 
-import com.vetpet.VetPet.Tutor;
+import com.vetpet.VetPet.entity.Tutor;
 import com.vetpet.VetPet.repository.TutorRepository;
 
 import org.junit.jupiter.api.Test;

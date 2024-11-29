@@ -1,6 +1,6 @@
 package com.vetpet.VetPet.repository;
 
-import com.vetpet.VetPet.Tutor;
+import com.vetpet.VetPet.entity.Tutor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
