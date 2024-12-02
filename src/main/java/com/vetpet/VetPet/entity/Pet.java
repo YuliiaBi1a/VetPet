@@ -23,11 +23,12 @@ public class Pet {
     public Pet() {
     }
 
-    public Pet(String name, int age, String breed, String class_species) {
+    public Pet(String name, int age, String breed, String class_species, Tutor tutor ) {
         this.name = name;
         this.age = age;
         this.breed = breed;
         this.class_species = class_species;
+        this.tutor = tutor;
     }
 
     public String getName() {
@@ -71,6 +72,11 @@ public class Pet {
     }
 
 
+    public Tutor getTutor() {
+        return tutor;
+    }
 
-
+    public void setTutor(Tutor tutor) {
+        this.tutor = tutor;
+    }
 }
