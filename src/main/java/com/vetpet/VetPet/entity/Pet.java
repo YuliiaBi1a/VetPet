@@ -31,6 +31,10 @@ public class Pet {
         this.tutor = tutor;
     }
 
+    public Pet(String name, int age, String breed, String class_speciesg, String tutor ) {
+    }
+
+
     public String getName() {
         return name;
     }
