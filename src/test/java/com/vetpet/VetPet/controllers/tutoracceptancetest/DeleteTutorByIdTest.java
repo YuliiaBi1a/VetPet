@@ -7,12 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureMockMvc
 @SpringBootTest
 public class DeleteTutorByIdTest {
@@ -35,6 +36,7 @@ public class DeleteTutorByIdTest {
                 ));// Mensaje esperado.
     }
 
+
     @Test
     void givenNonExistingTutor_whenGetTutorById_thenReturnNotFound() throws Exception {
         //when & then
@@ -44,4 +46,7 @@ public class DeleteTutorByIdTest {
                 .andExpect(content().contentType("text/plain;charset=UTF-8"))
                 .andExpect(content().string("El tutor con 1 actualmente no se encuentra asociado a un tutor registrado")); // Mensaje esperado.
     }
+
+
 }
+
