@@ -1,5 +1,7 @@
 package com.vetpet.VetPet.controllers;
 
+import com.vetpet.VetPet.dto.RequestPetDto;
+import com.vetpet.VetPet.dto.RequestTutorDto;
 import com.vetpet.VetPet.entity.Pet;
 import com.vetpet.VetPet.entity.Tutor;
 import com.vetpet.VetPet.repository.PetRepository;
@@ -17,12 +19,14 @@ import java.util.Optional;
 
 public class PetController {
     private final PetRepository PET_REPOSITORY;
+    private final TutorRepository TUTOR_REPOSITORY;
 
-    public PetController(PetRepository petRepository) {
+    public PetController(PetRepository petRepository, TutorRepository tutorRepository) {
         PET_REPOSITORY = petRepository;
-
+        TUTOR_REPOSITORY = tutorRepository;
 
     }
+
 
     @GetMapping
     public List<Pet> getPetList() {
@@ -38,12 +42,18 @@ public class PetController {
         return new ResponseEntity<>(optionalPet.get(), HttpStatus.OK);
     }
     @PostMapping
-    public ResponseEntity<?> createPet(@RequestBody Pet pet){
-        Optional<Pet> optionalPet = PET_REPOSITORY.findByName(pet.getName());
-        if (optionalPet.isPresent()){
-            return new ResponseEntity<>( "this name is already asociated with another pet " + pet.getName()  , HttpStatus.CONFLICT);
+    public ResponseEntity<?> createPet(@RequestBody RequestPetDto requestPetDto){
+        Optional<Tutor> optionalTutor = TUTOR_REPOSITORY.findById(requestPetDto.tutorId());
+        if (optionalTutor.isEmpty()){
+           return new ResponseEntity<>( "tutor with" +  requestPetDto.tutorId() + " doesn't exist", HttpStatus.NOT_FOUND);
         }
-        Pet newPet = PET_REPOSITORY.save(pet);
+
+        Pet newPet = new Pet(requestPetDto.name(),
+                requestPetDto.age(),
+                requestPetDto.breed(),
+                requestPetDto.class_species(),
+                optionalTutor.get());
+         PET_REPOSITORY.save(newPet);
         return new ResponseEntity<>(newPet,HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
