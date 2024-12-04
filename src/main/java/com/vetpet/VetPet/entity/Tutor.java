@@ -1,8 +1,14 @@
 package com.vetpet.VetPet.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Tutor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,42 +26,4 @@ public class Tutor {
         this.phoneNumber = phoneNumber;
     }
 
-    //constructor por defecto
-
-    public Tutor() {
-
-    }
-
-
-             //getters
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public int getPhoneNumber() {
-        return phoneNumber;
-    }
-            //setters
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public void setPhoneNumber(int phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
 }

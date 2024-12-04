@@ -2,6 +2,7 @@ package com.vetpet.VetPet.controllers;
 
 import com.vetpet.VetPet.entity.Tutor;
 import com.vetpet.VetPet.repository.TutorRepository;
+import com.vetpet.VetPet.services.TutorServices;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +15,11 @@ import java.util.Optional;
 
 public class TutorController {
     private final TutorRepository TUTOR_REPOSITORY;
+    private final TutorServices TUTOR_SERVICES;
 
-    public TutorController(TutorRepository tutorRepository) {
+    public TutorController(TutorRepository tutorRepository, TutorServices tutorServices) {
         TUTOR_REPOSITORY = tutorRepository;
-
+        TUTOR_SERVICES = tutorServices;
     }
 
     @GetMapping
@@ -35,13 +37,11 @@ public class TutorController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createTutor(@RequestBody Tutor tutor){
-        Optional<Tutor> optionalTutor = TUTOR_REPOSITORY.findByPhoneNumber(tutor.getPhoneNumber());
-        if (optionalTutor.isPresent()){
-            return new ResponseEntity<>( "Este teléfono ya esta asociado a un tutor existente. Pertenece a " + tutor.getName() + " " + tutor.getSurname(), HttpStatus.CONFLICT);
-        }
-        Tutor newTutor = TUTOR_REPOSITORY.save(tutor);
+    public ResponseEntity<?> saveNewTutor(@RequestBody Tutor tutor){
+        Tutor newTutor = TUTOR_SERVICES.createTutor(tutor);
         return new ResponseEntity<>(newTutor,HttpStatus.CREATED);
+
+
     }
 
     @PutMapping("/{id}")
