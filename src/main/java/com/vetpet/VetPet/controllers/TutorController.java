@@ -1,5 +1,6 @@
 package com.vetpet.VetPet.controllers;
 
+import com.vetpet.VetPet.dto.RequestTutorDto;
 import com.vetpet.VetPet.entity.Tutor;
 import com.vetpet.VetPet.repository.TutorRepository;
 import com.vetpet.VetPet.services.TutorServices;
@@ -14,62 +15,37 @@ import java.util.Optional;
 @RequestMapping("/api/tutors")
 
 public class TutorController {
-    private final TutorRepository TUTOR_REPOSITORY;
-    private final TutorServices TUTOR_SERVICES;
 
-    public TutorController(TutorRepository tutorRepository, TutorServices tutorServices) {
-        TUTOR_REPOSITORY = tutorRepository;
+    private final TutorServices TUTOR_SERVICES;
+    public TutorController(TutorServices tutorServices) {
         TUTOR_SERVICES = tutorServices;
+    }
+
+    @PostMapping
+    public ResponseEntity<?> saveNewTutor(@RequestBody RequestTutorDto requestTutor){
+        Tutor newTutor = TUTOR_SERVICES.createTutor(requestTutor);
+        return new ResponseEntity<>(newTutor,HttpStatus.CREATED);
     }
 
     @GetMapping
     public List<Tutor> getTutorsList() {
-        return TUTOR_REPOSITORY.findAll();
+        return TUTOR_SERVICES.findAllTutor();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getTutorById(@PathVariable Long id){
-        Optional<Tutor> optionalTutor = TUTOR_REPOSITORY.findById(id);
-        if(optionalTutor.isEmpty()){
-            return new ResponseEntity<>("El tutor con " + id +" actualmente no se encuentra asociado a un tutor registrado", HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(optionalTutor.get(), HttpStatus.OK);
-    }
-
-    @PostMapping
-    public ResponseEntity<?> saveNewTutor(@RequestBody Tutor tutor){
-        Tutor newTutor = TUTOR_SERVICES.createTutor(tutor);
-        return new ResponseEntity<>(newTutor,HttpStatus.CREATED);
-
-
+        return new ResponseEntity<>(TUTOR_SERVICES.findTutorById(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-        public ResponseEntity<?> updateTutorById(@PathVariable Long id, @RequestBody Tutor updateTutor) {
-           Optional<Tutor> optionalTutor = TUTOR_REPOSITORY.findById(id);
-           if (optionalTutor.isEmpty()) {
-               return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-           }
-
-           Tutor basetutor = optionalTutor.get();
-           basetutor.setName(updateTutor.getName());
-           basetutor.setSurname(updateTutor.getSurname());
-           basetutor.setPhoneNumber(updateTutor.getPhoneNumber());
-        TUTOR_REPOSITORY.save(basetutor);
-        return new ResponseEntity<>(" Tutor has been updated." ,HttpStatus.OK);
+    public ResponseEntity<?> updateTutorById(@PathVariable Long id, @RequestBody RequestTutorDto request) {
+        return new ResponseEntity<>(TUTOR_SERVICES.updateTutor(id, request) ,HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-        public ResponseEntity<?> deleteTutorById (@PathVariable Long id){
-        Optional<Tutor> optionalTutor = TUTOR_REPOSITORY.findById(id);
-        if (optionalTutor.isEmpty()) {
-            return new ResponseEntity<>("The id " + id + " isn´t associated with any tutor currently.",HttpStatus.NOT_FOUND);
-        }
-        TUTOR_REPOSITORY.deleteById(id);
-        return new ResponseEntity<>(" Tutor has been deleted.",HttpStatus.OK);
-
-        }
-
-
+    public ResponseEntity<?> deleteTutorById (@PathVariable Long id){
+        TUTOR_SERVICES.deleteTutorById(id);
+        return new ResponseEntity<>(" Tutor has been deleted.",HttpStatus.NO_CONTENT);
+    }
 }
 
