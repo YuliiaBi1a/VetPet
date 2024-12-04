@@ -6,6 +6,7 @@ import com.vetpet.VetPet.entity.Pet;
 import com.vetpet.VetPet.entity.Tutor;
 import com.vetpet.VetPet.repository.PetRepository;
 import com.vetpet.VetPet.repository.TutorRepository;
+import com.vetpet.VetPet.services.PetService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +21,13 @@ import java.util.Optional;
 public class PetController {
     private final PetRepository PET_REPOSITORY;
     private final TutorRepository TUTOR_REPOSITORY;
+    private final PetService PET_SERVICES;
 
-    public PetController(PetRepository petRepository, TutorRepository tutorRepository) {
+    public PetController(PetRepository petRepository, TutorRepository tutorRepository, PetService petServices) {
         PET_REPOSITORY = petRepository;
         TUTOR_REPOSITORY = tutorRepository;
 
+        PET_SERVICES = petServices;
     }
 
 
@@ -43,17 +46,7 @@ public class PetController {
     }
     @PostMapping
     public ResponseEntity<?> createPet(@RequestBody RequestPetDto requestPetDto){
-        Optional<Tutor> optionalTutor = TUTOR_REPOSITORY.findById(requestPetDto.tutorId());
-        if (optionalTutor.isEmpty()){
-           return new ResponseEntity<>( "tutor with" +  requestPetDto.tutorId() + " doesn't exist", HttpStatus.NOT_FOUND);
-        }
-
-        Pet newPet = new Pet(requestPetDto.name(),
-                requestPetDto.age(),
-                requestPetDto.breed(),
-                requestPetDto.class_species(),
-                optionalTutor.get());
-         PET_REPOSITORY.save(newPet);
+       Pet newPet = PET_SERVICES.createPet(requestPetDto);
         return new ResponseEntity<>(newPet,HttpStatus.CREATED);
     }
     @PutMapping("/{id}")

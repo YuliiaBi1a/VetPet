@@ -14,8 +14,6 @@ public class Tutor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-
-
     private String name;
     private String surname;
     private int phoneNumber;
@@ -25,5 +23,4 @@ public class Tutor {
         this.surname = surname;
         this.phoneNumber = phoneNumber;
     }
-
 }
