@@ -2,6 +2,9 @@ package com.vetpet.VetPet.services;
 
 import com.vetpet.VetPet.dto.RequestTutorDto;
 import com.vetpet.VetPet.entity.Tutor;
+import com.vetpet.VetPet.exceptions.DuplicatePhoneException;
+import com.vetpet.VetPet.exceptions.NoIdFoundException;
+import com.vetpet.VetPet.exceptions.NoRegistersFoundException;
 import com.vetpet.VetPet.repository.TutorRepository;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +25,7 @@ public class TutorServices {
                 tutorDto.surname(), tutorDto.phoneNumber());
         Optional<Tutor> optionalTutor = TUTOR_REPOSITORY.findByPhoneNumber(tutorDto.phoneNumber());
         if (optionalTutor.isPresent()) {
-            throw new RuntimeException("This phone number already exists"); //TODO customizar exception
+            throw new DuplicatePhoneException(tutorDto.phoneNumber());
         }
         return TUTOR_REPOSITORY.save(newTutor);
     }
@@ -30,21 +33,21 @@ public class TutorServices {
     public List<Tutor> findAllTutor() {
         List<Tutor> tutors = TUTOR_REPOSITORY.findAll();
         if (tutors.isEmpty()) {
-            throw new RuntimeException("Not found"); //TODO customizar exception
+            throw new NoRegistersFoundException();
         }
         return tutors;
     }
 
     public Tutor findTutorById(Long id) {
         return TUTOR_REPOSITORY.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tutor not found with ID: " + id));
+                .orElseThrow(() -> new NoIdFoundException(id));
     }
 
     public Tutor updateTutor(Long id, RequestTutorDto request) {
 
         Optional<Tutor> optionalEmployee = TUTOR_REPOSITORY.findById(id);
         if (optionalEmployee.isEmpty()) {
-            throw new RuntimeException("Tutor not found with ID: " + id); //TODO customizar exception
+            throw new NoIdFoundException(id);
         }
         Tutor existingTutor = optionalEmployee.get();
 
@@ -58,7 +61,7 @@ public class TutorServices {
     public void deleteTutorById(Long id) {
         Optional<Tutor> tutorOptional = TUTOR_REPOSITORY.findById(id);
         if (tutorOptional.isEmpty()) {
-            throw new RuntimeException("Tutor not found with ID: " + id); //TODO customizar exception
+            throw new NoIdFoundException(id);
         }
         TUTOR_REPOSITORY.deleteById(id);
     }
