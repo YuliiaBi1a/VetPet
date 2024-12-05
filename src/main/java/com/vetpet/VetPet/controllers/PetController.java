@@ -1,9 +1,9 @@
 package com.vetpet.VetPet.controllers;
 
 import com.vetpet.VetPet.dto.RequestPetDto;
-import com.vetpet.VetPet.dto.RequestTutorDto;
+
 import com.vetpet.VetPet.entity.Pet;
-import com.vetpet.VetPet.entity.Tutor;
+
 import com.vetpet.VetPet.repository.PetRepository;
 import com.vetpet.VetPet.repository.TutorRepository;
 import com.vetpet.VetPet.services.PetService;
@@ -33,22 +33,25 @@ public class PetController {
 
     @GetMapping
     public List<Pet> getPetList() {
-        return PET_REPOSITORY.findAll();
+        return PET_SERVICES.findAllPets();
 
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPetById(@PathVariable Long id){
+    public ResponseEntity<?> getPetById(@PathVariable Long id) {
         Optional<Pet> optionalPet = PET_REPOSITORY.findById(id);
-        if(optionalPet.isEmpty()){
-            return new ResponseEntity<>("the pet with " + id +" doesnt match with any pet currently", HttpStatus.NOT_FOUND);
+        if (optionalPet.isEmpty()) {
+            return new ResponseEntity<>("the pet with " + id + " doesnt match with any pet currently", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(optionalPet.get(), HttpStatus.OK);
     }
+
     @PostMapping
-    public ResponseEntity<?> createPet(@RequestBody RequestPetDto requestPetDto){
-       Pet newPet = PET_SERVICES.createPet(requestPetDto);
-        return new ResponseEntity<>(newPet,HttpStatus.CREATED);
+    public ResponseEntity<?> createPet(@RequestBody RequestPetDto requestPetDto) {
+        Pet newPet = PET_SERVICES.createPet(requestPetDto);
+        return new ResponseEntity<>(newPet, HttpStatus.CREATED);
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updatePetById(@PathVariable Long id, @RequestBody Pet updatePet) {
         Optional<Pet> optionalPet = PET_REPOSITORY.findById(id);
@@ -64,17 +67,17 @@ public class PetController {
         basepet.setTutor(updatePet.getTutor());
 
         PET_REPOSITORY.save(basepet);
-        return new ResponseEntity<>(" Pet has been updated." ,HttpStatus.OK);
+        return new ResponseEntity<>(" Pet has been updated.", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePetById (@PathVariable Long id){
+    public ResponseEntity<?> deletePetById(@PathVariable Long id) {
         Optional<Pet> optionalPet = PET_REPOSITORY.findById(id);
         if (optionalPet.isEmpty()) {
-            return new ResponseEntity<>("The id " + id + " isn´t associated with any pet currently.",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("The id " + id + " isn´t associated with any pet currently.", HttpStatus.NOT_FOUND);
         }
         PET_REPOSITORY.deleteById(id);
-        return new ResponseEntity<>(" Pet has been deleted.",HttpStatus.OK);
+        return new ResponseEntity<>(" Pet has been deleted.", HttpStatus.OK);
 
     }
 }
