@@ -49,5 +49,32 @@ public class PetService {
                 .orElseThrow(() -> new RuntimeException("Pet is not found with ID: " + id));
     }
 
+    public ResponseEntity<Pet> updatePet(Long id, RequestPetDto petDto) {
+        Optional<Pet> optionalPet = PET_REPOSITORY.findById(id);
+        if (optionalPet.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Optional<Tutor> optionalTutor = TUTOR_REPOSITORY.findById(petDto.tutorId());
+        if (optionalTutor.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        Pet existingPet = optionalPet.get();
 
+        existingPet.setName(petDto.name());
+        existingPet.setAge(petDto.age());
+        existingPet.setBreed(petDto.breed());
+        existingPet.setClass_species(petDto.class_species());
+        existingPet.setTutor(optionalTutor.get());
+        Pet updatedPet = PET_REPOSITORY.save(existingPet);
+
+        return new ResponseEntity<>(updatedPet, HttpStatus.OK);
+    }
+
+    public void deletePetById(Long id){
+        Optional<Pet> optionalPet = PET_REPOSITORY.findById(id);
+        if (optionalPet.isEmpty()){
+            throw new RuntimeException("Pet not found with ID: " + id); // TODO: customizar excepción
+        }
+        PET_REPOSITORY.deleteById(id);
+    }
 }
