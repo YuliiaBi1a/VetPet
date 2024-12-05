@@ -22,5 +22,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleNotFoundId(NoIdFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
+
+    @ExceptionHandler(NoIdFoundBadRequestException.class)
+    public ResponseEntity<String> handleBadRequest(NoIdFoundBadRequestException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
 }
 

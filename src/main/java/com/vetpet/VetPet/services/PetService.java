@@ -3,6 +3,9 @@ package com.vetpet.VetPet.services;
 import com.vetpet.VetPet.dto.RequestPetDto;
 import com.vetpet.VetPet.entity.Pet;
 import com.vetpet.VetPet.entity.Tutor;
+import com.vetpet.VetPet.exceptions.NoIdFoundBadRequestException;
+import com.vetpet.VetPet.exceptions.NoIdFoundException;
+import com.vetpet.VetPet.exceptions.NoRegistersFoundException;
 import com.vetpet.VetPet.repository.PetRepository;
 import com.vetpet.VetPet.repository.TutorRepository;
 import org.springframework.http.HttpStatus;
@@ -26,7 +29,7 @@ public class PetService {
     public Pet createPet(RequestPetDto petDto) {
         Optional<Tutor> optionalTutor = TUTOR_REPOSITORY.findById(petDto.tutorId());
         if (optionalTutor.isEmpty()) {
-            throw new RuntimeException("tutor with" + petDto.tutorId() + " doesn't exist");
+            throw new NoIdFoundBadRequestException(petDto.tutorId());
         }
 
         Pet newPet = new Pet(petDto.name(),
@@ -37,26 +40,29 @@ public class PetService {
         return PET_REPOSITORY.save(newPet);
 
     }
+
     public List<Pet> findAllPets() {
         List<Pet> pets = PET_REPOSITORY.findAll();
         if (pets.isEmpty()) {
-            throw new RuntimeException("Not found"); //TODO customizar exception
+            throw new NoRegistersFoundException();
         }
         return pets;
     }
+
     public Pet findPetById(Long id) {
         return PET_REPOSITORY.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pet is not found with ID: " + id));
+                .orElseThrow(() -> new NoIdFoundException(id));
     }
 
-    public ResponseEntity<Pet> updatePet(Long id, RequestPetDto petDto) {
+    public Pet updatePet(Long id, RequestPetDto petDto) {
         Optional<Pet> optionalPet = PET_REPOSITORY.findById(id);
         if (optionalPet.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new NoIdFoundException(id);
         }
+
         Optional<Tutor> optionalTutor = TUTOR_REPOSITORY.findById(petDto.tutorId());
         if (optionalTutor.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new NoIdFoundBadRequestException(petDto.tutorId());
         }
         Pet existingPet = optionalPet.get();
 
@@ -65,15 +71,14 @@ public class PetService {
         existingPet.setBreed(petDto.breed());
         existingPet.setClass_species(petDto.class_species());
         existingPet.setTutor(optionalTutor.get());
-        Pet updatedPet = PET_REPOSITORY.save(existingPet);
 
-        return new ResponseEntity<>(updatedPet, HttpStatus.OK);
+        return PET_REPOSITORY.save(existingPet);
     }
 
     public void deletePetById(Long id){
         Optional<Pet> optionalPet = PET_REPOSITORY.findById(id);
         if (optionalPet.isEmpty()){
-            throw new RuntimeException("Pet not found with ID: " + id); // TODO: customizar excepción
+            throw new NoIdFoundException(id);
         }
         PET_REPOSITORY.deleteById(id);
     }

@@ -16,8 +16,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/pets")
-
-
 public class PetController {
     private final PetRepository PET_REPOSITORY;
     private final TutorRepository TUTOR_REPOSITORY;
@@ -26,24 +24,17 @@ public class PetController {
     public PetController(PetRepository petRepository, TutorRepository tutorRepository, PetService petServices) {
         PET_REPOSITORY = petRepository;
         TUTOR_REPOSITORY = tutorRepository;
-
         PET_SERVICES = petServices;
     }
 
-
     @GetMapping
-    public List<Pet> getPetList() {
-        return PET_SERVICES.findAllPets();
-
+    public ResponseEntity<?> getPetList() {
+        return new ResponseEntity<>(PET_SERVICES.findAllPets(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getPetById(@PathVariable Long id) {
-        Optional<Pet> optionalPet = PET_REPOSITORY.findById(id);
-        if (optionalPet.isEmpty()) {
-            return new ResponseEntity<>("the pet with " + id + " doesnt match with any pet currently", HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(optionalPet.get(), HttpStatus.OK);
+        return new ResponseEntity<>(PET_SERVICES.findPetById(id), HttpStatus.OK);
     }
 
     @PostMapping
@@ -60,7 +51,6 @@ public class PetController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePetById(@PathVariable Long id) {
         PET_SERVICES.deletePetById(id);
-        return new ResponseEntity<>(" Pet has been deleted.", HttpStatus.OK);
-
+        return new ResponseEntity<>("Pet has been deleted.", HttpStatus.NO_CONTENT);
     }
 }
