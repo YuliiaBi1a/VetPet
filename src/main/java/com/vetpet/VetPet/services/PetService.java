@@ -27,18 +27,11 @@ public class PetService {
     }
 
     public Pet createPet(RequestPetDto petDto) {
-        Optional<Tutor> optionalTutor = TUTOR_REPOSITORY.findById(petDto.tutorId());
-        if (optionalTutor.isEmpty()) {
-            throw new NoIdFoundBadRequestException(petDto.tutorId());
-        }
+        Tutor tutor = TUTOR_REPOSITORY.findById(petDto.tutorId())
+                .orElseThrow(() -> new NoIdFoundBadRequestException(petDto.tutorId()));
 
-        Pet newPet = new Pet(petDto.name(),
-                petDto.age(),
-                petDto.breed(),
-                petDto.class_species(),
-                optionalTutor.get());
+        Pet newPet = petDto.toEntity(tutor);
         return PET_REPOSITORY.save(newPet);
-
     }
 
     public List<Pet> findAllPets() {
