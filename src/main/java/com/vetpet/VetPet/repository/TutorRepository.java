@@ -10,4 +10,3 @@ public interface TutorRepository extends JpaRepository <Tutor,Long>{
 
     Optional<Tutor> findByPhoneNumber(int phoneNumber);
 }
-
