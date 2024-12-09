@@ -182,7 +182,7 @@ Response:
 - <span style="color:green;">Java 17:</span> Lenguaje de programación principal.
 - <span style="color:green;">Spring Boot:</span> Framework para el desarrollo de la API.
 - <span style="color:green;">Maven:</span> Herramienta de construcción y gestión de dependencias.
-- <span style="color:green;">Base de datos:</span> MySQL .
+- <span style="color:green;">Base de datos:</span> H2 .
 - <span style="color:green;">Postman:</span> Para probar los endpoints.
 
 ---
@@ -192,12 +192,17 @@ Response:
 Edita el archivo application.properties para establecer las credenciales de tu base de datos:
 properties
 
-        Copiar código
-        spring.datasource.url=jdbc:mysql://localhost:3306/veterinary
-        spring.datasource.username=tu_usuario
-        spring.datasource.password=tu_contraseña
-        spring.jpa.hibernate.ddl-auto=update
-
+        spring.application.name=VetPet
+        spring.h2.console.enabled=true
+        
+        spring.datasource.url=jdbc:h2:mem:VetPet
+        spring.datasource.driverClassName=org.h2.Driver
+        spring.datasource.username= <tu_nombre_de_usuario>
+        spring.datasource.password= <tu_contraseña> o se pude dejarlo vacio
+        
+        spring.jpa.show-sql=true
+        spring.jpa.properties.hibernate.format_sql=true
+La base de datos esta corriendo en: http://localhost:8080/h2-console/
 ###  🧪 <span style="color:magenta;">**Ejecutar Tests**
 
 Para ejecutar los tests de este proyecto, sigue los pasos a continuación:
