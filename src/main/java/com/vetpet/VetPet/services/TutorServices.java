@@ -17,7 +17,7 @@ public class TutorServices {
     private final TutorRepository TUTOR_REPOSITORY;
 
     public TutorServices(TutorRepository tutorRepository) {
-        TUTOR_REPOSITORY = tutorRepository;
+        this.TUTOR_REPOSITORY = tutorRepository;
     }
     //POST
     public Tutor createTutor(RequestTutorDto tutorDto) {
