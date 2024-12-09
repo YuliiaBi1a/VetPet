@@ -242,7 +242,7 @@ En nuestro equipo utilizamos **Postman** para realizar pruebas de nuestra API, l
 4. **<span style="color:green;">Documentación de Postman**: Toda la documentación relacionada con las API se mantiene dentro de Postman, donde cada solicitud tiene su propia descripción y ejemplo. De esta manera, todos pueden entender rápidamente cómo interactuar con la API.
 
 #### **<span style="color:green;">Pasos para importar la colección de Postman:**
-1. Descargar la colección desde el siguiente enlace: [Colección Postman API Veterinaria](enlace_a_la_colección).
+1. Descargar la colección desde el siguiente enlace: [Colección Postman API Veterinaria]([enlace_a_la_colección](https://lafamiliapaulinchi.postman.co/workspace/LaFamiliaPaulinchi-Workspace~2a0eac88-d382-4ae3-a42d-cc9642eebf64/overview).
 2. Abrir Postman y hacer clic en "Importar".
 3. Seleccionar el archivo descargado para cargar la colección.
 4. Configurar las variables de entorno si es necesario.
