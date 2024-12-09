@@ -40,9 +40,12 @@ Este proyecto es una API REST desarrollada en Java Spring Boot para gestionar lo
 ###  <span style="color:blue;">📂 **Estructura del Proyecto**
 - **PetController**: Gestiona las operaciones relacionadas con las mascotas.
 - **TutorController**: Gestiona las operaciones relacionadas con los tutores.
+- **AppointmentController**: Gestiona las operaciones relacionadas con las citas.
 - **PetService**: Contiene la lógica de negocio para las mascotas.
 - **TutorService**: Contiene la lógica de negocio para los tutores.
-- **PetRepository** y **TutorRepository**: Repositorios para acceder a la base de datos.
+- **AppointmentService**: Contiene la lógica de negocio para las citas.
+- **PetRepository**, **TutorRepository** y **AppointmentRepository**: Repositorios para acceder a la base de datos.
+- **Exceptions**: Contiene las excepciones personalizadas.
 
 ## 📦 <span style="color:blue;">**Endpoints de la API**
 
