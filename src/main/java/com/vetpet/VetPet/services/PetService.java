@@ -17,16 +17,16 @@ import java.util.Optional;
 public class PetService {
     private final PetRepository PET_REPOSITORY;
 
-    private final GuardianRepository TUTOR_REPOSITORY;
+    private final GuardianRepository GUARDIAN_REPOSITORY;
 
     public PetService(PetRepository petRepository, GuardianRepository guardianRepository) {
         PET_REPOSITORY = petRepository;
-        TUTOR_REPOSITORY = guardianRepository;
+        GUARDIAN_REPOSITORY = guardianRepository;
     }
 
     public Pet createPet(RequestPetDto petDto) {
-        Guardian guardian = TUTOR_REPOSITORY.findById(petDto.tutorId())
-                .orElseThrow(() -> new NoIdFoundBadRequestException(petDto.tutorId()));
+        Guardian guardian = GUARDIAN_REPOSITORY.findById(petDto.guardianId())
+                .orElseThrow(() -> new NoIdFoundBadRequestException(petDto.guardianId()));
 
         Pet newPet = petDto.toEntity(guardian);
         return PET_REPOSITORY.save(newPet);
@@ -51,9 +51,9 @@ public class PetService {
             throw new NoIdFoundException(id);
         }
 
-        Optional<Guardian> optionalTutor = TUTOR_REPOSITORY.findById(petDto.tutorId());
-        if (optionalTutor.isEmpty()) {
-            throw new NoIdFoundBadRequestException(petDto.tutorId());
+        Optional<Guardian> optionalGuardian = GUARDIAN_REPOSITORY.findById(petDto.guardianId());
+        if (optionalGuardian.isEmpty()) {
+            throw new NoIdFoundBadRequestException(petDto.guardianId());
         }
         Pet existingPet = optionalPet.get();
 
@@ -61,7 +61,7 @@ public class PetService {
         existingPet.setAge(petDto.age());
         existingPet.setBreed(petDto.breed());
         existingPet.setClass_species(petDto.class_species());
-        existingPet.setGuardian(optionalTutor.get());
+        existingPet.setGuardian(optionalGuardian.get());
 
         return PET_REPOSITORY.save(existingPet);
     }

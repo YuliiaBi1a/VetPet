@@ -2,10 +2,10 @@ package com.vetpet.VetPet.dto;
 
 import com.vetpet.VetPet.entity.Guardian;
 
-public record ResponseTutorDto(Long id, String name, String email, String phone, String address) {
+public record ResponseGuardianDto(Long id, String name, String email, String phone, String address) {
 
-    public static ResponseTutorDto fromEntity(Guardian guardian) {
-        return new ResponseTutorDto(
+    public static ResponseGuardianDto fromEntity(Guardian guardian) {
+        return new ResponseGuardianDto(
                 guardian.getId(),
                 guardian.getName(),
                 guardian.getEmail(),

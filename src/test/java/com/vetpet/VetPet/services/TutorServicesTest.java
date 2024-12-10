@@ -1,6 +1,6 @@
 package com.vetpet.VetPet.services;
 
-import com.vetpet.VetPet.dto.RequestTutorDto;
+import com.vetpet.VetPet.dto.RequestGuardianDto;
 import com.vetpet.VetPet.entity.Tutor;
 import com.vetpet.VetPet.repository.TutorRepository;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class TutorServicesTest {
@@ -27,7 +26,7 @@ class TutorServicesTest {
     @Test
     void should_createAValidTutor(){
         //GIVEN
-        RequestTutorDto tutorRequest = new RequestTutorDto("some-name", "some-surname", 123321);
+        RequestGuardianDto tutorRequest = new RequestGuardianDto("some-name", "some-surname", 123321);
         TutorServices tutorServices = new TutorServices(tutorRepository);
         Tutor tutorToSave = new Tutor("some-name", "some-surname", 123321);
 
@@ -77,7 +76,7 @@ class TutorServicesTest {
     @Test
     void should_updateTutor() {
         // GIVEN
-        RequestTutorDto tutorRequest = new RequestTutorDto("new-name", "new-surname", 123321);
+        RequestGuardianDto tutorRequest = new RequestGuardianDto("new-name", "new-surname", 123321);
         TutorServices tutorServices = new TutorServices(tutorRepository);
         Tutor existingTutor = new Tutor(1L, "old-name", "old-surname", 123321);
         Tutor updatedTutor = new Tutor(1L, "new-name", "new-surname", 123321);

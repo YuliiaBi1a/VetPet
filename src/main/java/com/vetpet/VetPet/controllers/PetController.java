@@ -12,15 +12,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/pets")
+@RequestMapping("/pets")
 public class PetController {
     private final PetRepository PET_REPOSITORY;
-    private final GuardianRepository TUTOR_REPOSITORY;
+    private final GuardianRepository GUARDIAN_REPOSITORY;
     private final PetService PET_SERVICES;
 
     public PetController(PetRepository petRepository, GuardianRepository guardianRepository, PetService petServices) {
         PET_REPOSITORY = petRepository;
-        TUTOR_REPOSITORY = guardianRepository;
+        GUARDIAN_REPOSITORY = guardianRepository;
         PET_SERVICES = petServices;
     }
 

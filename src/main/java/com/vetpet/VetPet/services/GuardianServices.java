@@ -1,7 +1,7 @@
 package com.vetpet.VetPet.services;
 
-import com.vetpet.VetPet.dto.RequestTutorDto;
-import com.vetpet.VetPet.dto.ResponseTutorDto;
+import com.vetpet.VetPet.dto.RequestGuardianDto;
+import com.vetpet.VetPet.dto.ResponseGuardianDto;
 import com.vetpet.VetPet.entity.Guardian;
 import com.vetpet.VetPet.exceptions.DuplicatePhoneException;
 import com.vetpet.VetPet.exceptions.NoIdFoundException;
@@ -23,38 +23,38 @@ public class GuardianServices {
     }
 
     // POST
-    public ResponseTutorDto createGuardian(RequestTutorDto tutorDto) {
-        Optional<Guardian> existingTutor = GUARDIAN_REPOSITORY.findByPhone(tutorDto.phone());
-        if (existingTutor.isPresent()) {
-            throw new DuplicatePhoneException(tutorDto.phone());
+    public ResponseGuardianDto createGuardian(RequestGuardianDto guardianDto) {
+        Optional<Guardian> existingGuardian = GUARDIAN_REPOSITORY.findByPhone(guardianDto.phone());
+        if (existingGuardian.isPresent()) {
+            throw new DuplicatePhoneException(guardianDto.phone());
         }
 
-        Guardian newGuardian = tutorDto.toEntity();
+        Guardian newGuardian = guardianDto.toEntity();
         Guardian savedGuardian = GUARDIAN_REPOSITORY.save(newGuardian);
-        return ResponseTutorDto.fromEntity(savedGuardian);
+        return ResponseGuardianDto.fromEntity(savedGuardian);
     }
 
-    // GET: Get all tutors
-    public List<ResponseTutorDto> findAllGuardians() {
+    // GET: Get all guardians
+    public List<ResponseGuardianDto> findAllGuardians() {
         List<Guardian> guardians = GUARDIAN_REPOSITORY.findAll();
         if (guardians.isEmpty()) {
             throw new NoRegistersFoundException();
         }
 
         return guardians.stream()
-                .map(ResponseTutorDto::fromEntity)
+                .map(ResponseGuardianDto::fromEntity)
                 .collect(Collectors.toList());
     }
 
-    // GET: Find tutor by ID
-    public ResponseTutorDto findGuardianById(Long id) {
+    // GET: Find guardian by ID
+    public ResponseGuardianDto findGuardianById(Long id) {
         Guardian guardian = GUARDIAN_REPOSITORY.findById(id)
                 .orElseThrow(() -> new NoIdFoundException(id));
-        return ResponseTutorDto.fromEntity(guardian);
+        return ResponseGuardianDto.fromEntity(guardian);
     }
 
-    // PUT: Update tutor
-    public ResponseTutorDto updateGuardian(Long id, RequestTutorDto request) {
+    // PUT: Update guardian
+    public ResponseGuardianDto updateGuardian(Long id, RequestGuardianDto request) {
         Guardian existingGuardian = GUARDIAN_REPOSITORY.findById(id)
                 .orElseThrow(() -> new NoIdFoundException(id));
 
@@ -65,10 +65,10 @@ public class GuardianServices {
         existingGuardian.setAddress(request.address());
 
         Guardian updatedGuardian = GUARDIAN_REPOSITORY.save(existingGuardian);
-        return ResponseTutorDto.fromEntity(updatedGuardian);
+        return ResponseGuardianDto.fromEntity(updatedGuardian);
     }
 
-    // DELETE: Delete tutor by ID
+    // DELETE: Delete guardian by ID
     public void deleteGuardianById(Long id) {
         Guardian guardian = GUARDIAN_REPOSITORY.findById(id)
                 .orElseThrow(() -> new NoIdFoundException(id));
