@@ -1,7 +1,7 @@
 package com.vetpet.VetPet.controllers.tutoracceptancetest;
 
-import com.vetpet.VetPet.entity.Tutor;
-import com.vetpet.VetPet.repository.TutorRepository;
+import com.vetpet.VetPet.entity.Guardian;
+import com.vetpet.VetPet.repository.GuardianRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,15 +18,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 public class DeleteTutorByIdTest {
     @Autowired
-    private TutorRepository tutorRepository;
+    private GuardianRepository guardianRepository;
     @Autowired
     MockMvc mockMvc;
 
     @Test
     void given1Tutor_whenDeleteTutorById_thenReturnOK() throws Exception {
         //given
-        Tutor tutor1 = new Tutor("Evelyn","Quevedo",12345678);
-        tutorRepository.save(tutor1);
+        Guardian guardian1 = new Guardian("Evelyn","Quevedo",12345678);
+        guardianRepository.save(guardian1);
         //when & then
         mockMvc.perform(delete("/api/tutors/1")
                         .contentType(MediaType.APPLICATION_JSON))

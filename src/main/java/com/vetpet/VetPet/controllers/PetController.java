@@ -5,25 +5,22 @@ import com.vetpet.VetPet.dto.RequestPetDto;
 import com.vetpet.VetPet.entity.Pet;
 
 import com.vetpet.VetPet.repository.PetRepository;
-import com.vetpet.VetPet.repository.TutorRepository;
+import com.vetpet.VetPet.repository.GuardianRepository;
 import com.vetpet.VetPet.services.PetService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/api/pets")
 public class PetController {
     private final PetRepository PET_REPOSITORY;
-    private final TutorRepository TUTOR_REPOSITORY;
+    private final GuardianRepository TUTOR_REPOSITORY;
     private final PetService PET_SERVICES;
 
-    public PetController(PetRepository petRepository, TutorRepository tutorRepository, PetService petServices) {
+    public PetController(PetRepository petRepository, GuardianRepository guardianRepository, PetService petServices) {
         PET_REPOSITORY = petRepository;
-        TUTOR_REPOSITORY = tutorRepository;
+        TUTOR_REPOSITORY = guardianRepository;
         PET_SERVICES = petServices;
     }
 

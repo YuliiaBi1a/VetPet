@@ -1,34 +1,32 @@
 package com.vetpet.VetPet.controllers;
 
 import com.vetpet.VetPet.dto.RequestTutorDto;
-import com.vetpet.VetPet.entity.Tutor;
-import com.vetpet.VetPet.repository.TutorRepository;
-import com.vetpet.VetPet.services.TutorServices;
+import com.vetpet.VetPet.entity.Guardian;
+import com.vetpet.VetPet.services.GuardianServices;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/tutors")
+@RequestMapping("/guardian")
 
-public class TutorController {
+public class GuardianController {
 
-    private final TutorServices TUTOR_SERVICES;
-    public TutorController(TutorServices tutorServices) {
-        TUTOR_SERVICES = tutorServices;
+    private final GuardianServices TUTOR_SERVICES;
+    public GuardianController(GuardianServices guardianServices) {
+        TUTOR_SERVICES = guardianServices;
     }
 
     @PostMapping
     public ResponseEntity<?> saveNewTutor(@RequestBody RequestTutorDto requestTutor){
-        Tutor newTutor = TUTOR_SERVICES.createTutor(requestTutor);
-        return new ResponseEntity<>(newTutor,HttpStatus.CREATED);
+        Guardian newGuardian = TUTOR_SERVICES.createTutor(requestTutor);
+        return new ResponseEntity<>(newGuardian,HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<Tutor> getTutorsList() {
+    public List<Guardian> getTutorsList() {
         return TUTOR_SERVICES.findAllTutor();
     }
 

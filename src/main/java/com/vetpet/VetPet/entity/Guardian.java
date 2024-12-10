@@ -9,18 +9,20 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Tutor {
+public class Guardian {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
     private String name;
-    private String surname;
-    private int phoneNumber;
+    private String email;
+    private String phone;
+    private String address;
 
-    public Tutor(String name, String surname, int phoneNumber) {
+    public Guardian(String name, String email, String phone, String address) {
         this.name = name;
-        this.surname = surname;
-        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
     }
 }

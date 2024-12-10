@@ -2,10 +2,10 @@ package com.vetpet.VetPet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vetpet.VetPet.dto.RequestPetDto;
+import com.vetpet.VetPet.entity.Guardian;
 import com.vetpet.VetPet.entity.Pet;
-import com.vetpet.VetPet.entity.Tutor;
 import com.vetpet.VetPet.repository.PetRepository;
-import com.vetpet.VetPet.repository.TutorRepository;
+import com.vetpet.VetPet.repository.GuardianRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,25 +34,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         private PetRepository petRepository;
 
         @Autowired
-        private TutorRepository tutorRepository;
+        private GuardianRepository guardianRepository;
 
-        private Tutor testTutor;
+        private Guardian testGuardian;
 
         @BeforeEach
         void setUp() {
             petRepository.deleteAll();
-            tutorRepository.deleteAll();
+            guardianRepository.deleteAll();
 
-            testTutor = new Tutor();
-            testTutor.setName("John");
-            testTutor.setSurname("Doe");
-            testTutor.setPhoneNumber(123456789);
-            tutorRepository.save(testTutor);
+            testGuardian = new Guardian();
+            testGuardian.setName("John");
+            testGuardian.setSurname("Doe");
+            testGuardian.setPhone(123456789);
+            guardianRepository.save(testGuardian);
         }
 
         @Test
         void shouldCreatePet() throws Exception {
-            RequestPetDto petDto = new RequestPetDto("Buddy", 3, "Labrador", "Dog", testTutor.getId());
+            RequestPetDto petDto = new RequestPetDto("Buddy", 3, "Labrador", "Dog", testGuardian.getId());
 
             mockMvc.perform(post("/api/pets")
                             .contentType(MediaType.APPLICATION_JSON)
@@ -62,12 +62,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                     .andExpect(jsonPath("$.age", is(3)))
                     .andExpect(jsonPath("$.breed", is("Labrador")))
                     .andExpect(jsonPath("$.class_species", is("Dog")))
-                    .andExpect(jsonPath("$.tutor.id", is(testTutor.getId().intValue())));
+                    .andExpect(jsonPath("$.tutor.id", is(testGuardian.getId().intValue())));
         }
 
         @Test
         void shouldGetAllPets() throws Exception {
-            Pet pet = new Pet("Buddy", 3, "Labrador", "Dog", testTutor);
+            Pet pet = new Pet("Buddy", 3, "Labrador", "Dog", testGuardian);
             petRepository.save(pet);
 
             mockMvc.perform(get("/api/pets"))
@@ -78,7 +78,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
         @Test
         void shouldGetPetById() throws Exception {
-            Pet pet = new Pet("Buddy", 3, "Labrador", "Dog", testTutor);
+            Pet pet = new Pet("Buddy", 3, "Labrador", "Dog", testGuardian);
             pet = petRepository.save(pet);
 
             mockMvc.perform(get("/api/pets/" + pet.getId()))
@@ -88,10 +88,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
         @Test
         void shouldUpdatePet() throws Exception {
-            Pet pet = new Pet("Buddy", 3, "Labrador", "Dog", testTutor);
+            Pet pet = new Pet("Buddy", 3, "Labrador", "Dog", testGuardian);
             pet = petRepository.save(pet);
 
-            RequestPetDto updatedPetDto = new RequestPetDto("Max", 4, "Golden Retriever", "Dog", testTutor.getId());
+            RequestPetDto updatedPetDto = new RequestPetDto("Max", 4, "Golden Retriever", "Dog", testGuardian.getId());
 
             mockMvc.perform(put("/api/pets/" + pet.getId())
                             .contentType(MediaType.APPLICATION_JSON)
@@ -104,7 +104,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
         @Test
         void shouldDeletePet() throws Exception {
-            Pet pet = new Pet("Buddy", 3, "Labrador", "Dog", testTutor);
+            Pet pet = new Pet("Buddy", 3, "Labrador", "Dog", testGuardian);
             pet = petRepository.save(pet);
 
             mockMvc.perform(delete("/api/pets/" + pet.getId()))

@@ -1,7 +1,7 @@
 package com.vetpet.VetPet.controllers.tutoracceptancetest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vetpet.VetPet.entity.Tutor;
+import com.vetpet.VetPet.entity.Guardian;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -29,13 +29,13 @@ public class PostTutorTest {
 //given
 
 
-            Tutor tutor = new Tutor("John","Gimenez",123456789);
+            Guardian guardian = new Guardian("John","Gimenez",123456789);
 
         //when then
 
         mockMvc.perform(post("/api/tutors") // Asegúrate de usar la URL correcta para tu API
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(tutor))) // Envía el JSON directamente como cadena
+                        .content(objectMapper.writeValueAsString(guardian))) // Envía el JSON directamente como cadena
                 .andExpect(status().isCreated()); // Espera un 201 CREATED
 
     }

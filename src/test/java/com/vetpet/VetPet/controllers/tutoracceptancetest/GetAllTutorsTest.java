@@ -1,7 +1,7 @@
 package com.vetpet.VetPet.controllers.tutoracceptancetest;
 
-import com.vetpet.VetPet.entity.Tutor;
-import com.vetpet.VetPet.repository.TutorRepository;
+import com.vetpet.VetPet.entity.Guardian;
+import com.vetpet.VetPet.repository.GuardianRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +19,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 class GetAllTutorsTest {
     @Autowired
-private TutorRepository tutorRepository;
+private GuardianRepository guardianRepository;
     @Autowired
     MockMvc mockMvc;
 
     @Test
     void given1Tutor_whenGetAllTutor_thenReturnTutor() throws Exception {
         //given
-        Tutor tutor1 = new Tutor("Evelyn","Quevedo",12345678);
-        tutorRepository.save(tutor1);
-        Tutor tutor2 = new Tutor("Paloma","Apellido",87654321);
-        tutorRepository.save(tutor2);
+        Guardian guardian1 = new Guardian("Evelyn","Quevedo",12345678);
+        guardianRepository.save(guardian1);
+        Guardian guardian2 = new Guardian("Paloma","Apellido",87654321);
+        guardianRepository.save(guardian2);
          //when
         mockMvc.perform(get("/api/tutors")
                         .contentType(MediaType.APPLICATION_JSON))

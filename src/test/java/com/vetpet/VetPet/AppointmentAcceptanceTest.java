@@ -3,11 +3,11 @@ package com.vetpet.VetPet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vetpet.VetPet.dto.RequestAppointmentDto;
 import com.vetpet.VetPet.entity.Appointment;
+import com.vetpet.VetPet.entity.Guardian;
 import com.vetpet.VetPet.entity.Pet;
-import com.vetpet.VetPet.entity.Tutor;
 import com.vetpet.VetPet.repository.AppointmentRepository;
 import com.vetpet.VetPet.repository.PetRepository;
-import com.vetpet.VetPet.repository.TutorRepository;
+import com.vetpet.VetPet.repository.GuardianRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class AppointmentAcceptanceTest {
     private PetRepository petRepository;
 
     @Autowired
-    private TutorRepository tutorRepository;
+    private GuardianRepository guardianRepository;
 
     @Autowired
     private AppointmentRepository appointmentRepository;
@@ -48,21 +48,21 @@ public class AppointmentAcceptanceTest {
     void setup() {
         appointmentRepository.deleteAll();
         petRepository.deleteAll();
-        tutorRepository.deleteAll();
+        guardianRepository.deleteAll();
 
-        Tutor tutor = new Tutor();
-        tutor.setName("Alice");
-        tutor.setSurname("Johnson");
-        tutor.setPhoneNumber(123456789);
+        Guardian guardian = new Guardian();
+        guardian.setName("Alice");
+        guardian.setSurname("Johnson");
+        guardian.setPhone(123456789);
 
-        tutorRepository.save(tutor);
+        guardianRepository.save(guardian);
 
         testPet = new Pet();
         testPet.setName("Buddy");
         testPet.setClass_species("dog");
         testPet.setBreed("Labrador Retriever");
         testPet.setAge(4);
-        testPet.setTutor(tutor);
+        testPet.setGuardian(guardian);
         petRepository.save(testPet);
     }
 

@@ -22,13 +22,13 @@ public class Pet {
     private String class_species;
     @ManyToOne
     @JoinColumn(name = "tutor_id", nullable = false)
-    private Tutor tutor;
+    private Guardian guardian;
 
-    public Pet(String name, int age, String breed, String class_species, Tutor tutor ) {
+    public Pet(String name, int age, String breed, String class_species, Guardian guardian) {
         this.name = name;
         this.age = age;
         this.breed = breed;
         this.class_species = class_species;
-        this.tutor = tutor;
+        this.guardian = guardian;
     }
 }

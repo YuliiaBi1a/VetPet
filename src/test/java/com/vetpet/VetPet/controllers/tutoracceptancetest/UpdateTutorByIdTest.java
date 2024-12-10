@@ -1,8 +1,8 @@
 package com.vetpet.VetPet.controllers.tutoracceptancetest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vetpet.VetPet.entity.Tutor;
-import com.vetpet.VetPet.repository.TutorRepository;
+import com.vetpet.VetPet.entity.Guardian;
+import com.vetpet.VetPet.repository.GuardianRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 public class UpdateTutorByIdTest {
     @Autowired
-    private TutorRepository tutorRepository;
+    private GuardianRepository guardianRepository;
     @Autowired
     MockMvc mockMvc;
     @Autowired
@@ -29,8 +29,8 @@ public class UpdateTutorByIdTest {
     @Test
     void given1Tutor_whenUpdateTutorById_thenReturnUpdateTutorWithThisId() throws Exception{
         //given
-        Tutor tutor1 = new Tutor("Evelyn","Quevedo",987654321);
-        tutorRepository.save(tutor1);
+        Guardian guardian1 = new Guardian("Evelyn","Quevedo",987654321);
+        guardianRepository.save(guardian1);
 
         String jsonTutor1 = """
                 {
@@ -45,10 +45,10 @@ public class UpdateTutorByIdTest {
                         .content(jsonTutor1))
                 .andExpect(status().isOk())
                 .andExpect(content().string(" Tutor has been updated."));
-        Tutor updatedTutor = tutorRepository.findById(1L).get();
-        assertEquals("pruevbnba1", updatedTutor.getName());
-        assertEquals("pruxcveba2", updatedTutor.getSurname());
-        assertEquals(345, updatedTutor.getPhoneNumber());
+        Guardian updatedGuardian = guardianRepository.findById(1L).get();
+        assertEquals("pruevbnba1", updatedGuardian.getName());
+        assertEquals("pruxcveba2", updatedGuardian.getSurname());
+        assertEquals(345, updatedGuardian.getPhone());
 
     }
 

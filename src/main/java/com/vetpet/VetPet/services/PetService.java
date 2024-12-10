@@ -1,15 +1,13 @@
 package com.vetpet.VetPet.services;
 
 import com.vetpet.VetPet.dto.RequestPetDto;
+import com.vetpet.VetPet.entity.Guardian;
 import com.vetpet.VetPet.entity.Pet;
-import com.vetpet.VetPet.entity.Tutor;
 import com.vetpet.VetPet.exceptions.NoIdFoundBadRequestException;
 import com.vetpet.VetPet.exceptions.NoIdFoundException;
 import com.vetpet.VetPet.exceptions.NoRegistersFoundException;
 import com.vetpet.VetPet.repository.PetRepository;
-import com.vetpet.VetPet.repository.TutorRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.vetpet.VetPet.repository.GuardianRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,18 +17,18 @@ import java.util.Optional;
 public class PetService {
     private final PetRepository PET_REPOSITORY;
 
-    private final TutorRepository TUTOR_REPOSITORY;
+    private final GuardianRepository TUTOR_REPOSITORY;
 
-    public PetService(PetRepository petRepository, TutorRepository tutorRepository) {
+    public PetService(PetRepository petRepository, GuardianRepository guardianRepository) {
         PET_REPOSITORY = petRepository;
-        TUTOR_REPOSITORY = tutorRepository;
+        TUTOR_REPOSITORY = guardianRepository;
     }
 
     public Pet createPet(RequestPetDto petDto) {
-        Tutor tutor = TUTOR_REPOSITORY.findById(petDto.tutorId())
+        Guardian guardian = TUTOR_REPOSITORY.findById(petDto.tutorId())
                 .orElseThrow(() -> new NoIdFoundBadRequestException(petDto.tutorId()));
 
-        Pet newPet = petDto.toEntity(tutor);
+        Pet newPet = petDto.toEntity(guardian);
         return PET_REPOSITORY.save(newPet);
     }
 
@@ -53,7 +51,7 @@ public class PetService {
             throw new NoIdFoundException(id);
         }
 
-        Optional<Tutor> optionalTutor = TUTOR_REPOSITORY.findById(petDto.tutorId());
+        Optional<Guardian> optionalTutor = TUTOR_REPOSITORY.findById(petDto.tutorId());
         if (optionalTutor.isEmpty()) {
             throw new NoIdFoundBadRequestException(petDto.tutorId());
         }
@@ -63,7 +61,7 @@ public class PetService {
         existingPet.setAge(petDto.age());
         existingPet.setBreed(petDto.breed());
         existingPet.setClass_species(petDto.class_species());
-        existingPet.setTutor(optionalTutor.get());
+        existingPet.setGuardian(optionalTutor.get());
 
         return PET_REPOSITORY.save(existingPet);
     }

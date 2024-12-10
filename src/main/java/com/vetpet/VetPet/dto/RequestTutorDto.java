@@ -1,14 +1,15 @@
 package com.vetpet.VetPet.dto;
 
-import com.vetpet.VetPet.entity.Tutor;
+import com.vetpet.VetPet.entity.Guardian;
 
-public record RequestTutorDto(String name, String surname, int phoneNumber) {
+public record RequestTutorDto(String name, String email, String phone, String address) {
 
-    public Tutor toEntity() {
-        return new Tutor(
+    public Guardian toEntity() {
+        return new Guardian(
                 this.name,
-                this.surname,
-                this.phoneNumber
+                this.email,
+                this.phone,
+                this.address
         );
     }
 }
