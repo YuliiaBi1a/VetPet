@@ -2,7 +2,9 @@ package com.vetpet.VetPet.controllers;
 
 import com.vetpet.VetPet.dto.RequestGuardianDto;
 import com.vetpet.VetPet.dto.ResponseGuardianDto;
+import com.vetpet.VetPet.entity.Guardian;
 import com.vetpet.VetPet.services.GuardianServices;
+import jakarta.websocket.server.PathParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,9 +28,13 @@ public class GuardianController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ResponseGuardianDto>> getGuardianList() {
+    public ResponseEntity<List<ResponseGuardianDto>> getGuardianList(@PathParam("name") String name) {
+       if(name == null){
         List<ResponseGuardianDto> guardians = GUARDIAN_SERVICES.findAllGuardians();
         return new ResponseEntity<>(guardians, HttpStatus.OK);
+       }
+        List<ResponseGuardianDto> searchGuardians = GUARDIAN_SERVICES.searchByName(name);
+       return new ResponseEntity<>(searchGuardians, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

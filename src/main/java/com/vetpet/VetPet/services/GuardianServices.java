@@ -74,4 +74,10 @@ public class GuardianServices {
                 .orElseThrow(() -> new NoIdFoundException(id));
         GUARDIAN_REPOSITORY.deleteById(id);
     }
+
+    public List<ResponseGuardianDto> searchByName(String name) {
+        List<Guardian> guardianList = GUARDIAN_REPOSITORY.findLikeName(name);
+        return guardianList.stream()
+                .map(ResponseGuardianDto::fromEntity).toList();
+    }
 }
