@@ -1,6 +1,8 @@
 package com.vetpet.VetPet.services;
 
 import com.vetpet.VetPet.dto.RequestPetDto;
+import com.vetpet.VetPet.dto.ResponseGuardianDto;
+import com.vetpet.VetPet.dto.ResponsePetDto;
 import com.vetpet.VetPet.entity.Guardian;
 import com.vetpet.VetPet.entity.Pet;
 import com.vetpet.VetPet.exceptions.NoIdFoundBadRequestException;
@@ -24,53 +26,56 @@ public class PetService {
         GUARDIAN_REPOSITORY = guardianRepository;
     }
 
-    public Pet createPet(RequestPetDto petDto) {
+    //POST
+    public ResponsePetDto createPet(RequestPetDto petDto) {
         Guardian guardian = GUARDIAN_REPOSITORY.findById(petDto.guardianId())
                 .orElseThrow(() -> new NoIdFoundBadRequestException(petDto.guardianId()));
 
         Pet newPet = petDto.toEntity(guardian);
-        return PET_REPOSITORY.save(newPet);
+        Pet savedPet = PET_REPOSITORY.save(newPet);
+        return ResponsePetDto.fromEntity(savedPet);
     }
 
-    public List<Pet> findAllPets() {
+    //GET
+    public List<ResponsePetDto> findAllPets() {
         List<Pet> pets = PET_REPOSITORY.findAll();
         if (pets.isEmpty()) {
             throw new NoRegistersFoundException();
         }
-        return pets;
+        return pets.stream()
+                .map(ResponsePetDto::fromEntity)
+                .toList();
     }
 
-    public Pet findPetById(Long id) {
-        return PET_REPOSITORY.findById(id)
+    //GET
+    public ResponsePetDto findPetById(Long id) {
+        Pet pet = PET_REPOSITORY.findById(id)
                 .orElseThrow(() -> new NoIdFoundException(id));
+        return ResponsePetDto.fromEntity(pet);
     }
 
-    public Pet updatePet(Long id, RequestPetDto petDto) {
-        Optional<Pet> optionalPet = PET_REPOSITORY.findById(id);
-        if (optionalPet.isEmpty()) {
-            throw new NoIdFoundException(id);
-        }
+    //PUT
+    public ResponsePetDto updatePet(Long id, RequestPetDto request) {
+        Pet existingPet = PET_REPOSITORY.findById(id)
+                .orElseThrow(() -> new NoIdFoundException(id));
 
-        Optional<Guardian> optionalGuardian = GUARDIAN_REPOSITORY.findById(petDto.guardianId());
-        if (optionalGuardian.isEmpty()) {
-            throw new NoIdFoundBadRequestException(petDto.guardianId());
-        }
-        Pet existingPet = optionalPet.get();
+        Guardian guardian = GUARDIAN_REPOSITORY.findById(request.guardianId())
+                .orElseThrow(() -> new NoIdFoundBadRequestException(request.guardianId()));
 
-        existingPet.setName(petDto.name());
-        existingPet.setAge(petDto.age());
-        existingPet.setBreed(petDto.breed());
-        existingPet.setClass_species(petDto.class_species());
-        existingPet.setGuardian(optionalGuardian.get());
+        existingPet.setName(request.name());
+        existingPet.setAge(request.age());
+        existingPet.setBreed(request.breed());
+        existingPet.setClass_species(request.class_species());
+        existingPet.setGuardian(guardian);
 
-        return PET_REPOSITORY.save(existingPet);
+        Pet updatedPet = PET_REPOSITORY.save(existingPet);
+        return ResponsePetDto.fromEntity(updatedPet);
     }
 
+    //DELETE
     public void deletePetById(Long id){
-        Optional<Pet> optionalPet = PET_REPOSITORY.findById(id);
-        if (optionalPet.isEmpty()){
-            throw new NoIdFoundException(id);
-        }
+        Pet pet = PET_REPOSITORY.findById(id)
+                .orElseThrow(() -> new NoIdFoundException(id));
         PET_REPOSITORY.deleteById(id);
     }
 }

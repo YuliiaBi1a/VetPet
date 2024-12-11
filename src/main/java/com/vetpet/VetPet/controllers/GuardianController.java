@@ -52,6 +52,6 @@ public class GuardianController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteGuardianById(@PathVariable Long id) {
         GUARDIAN_SERVICES.deleteGuardianById(id);
-        return new ResponseEntity<>("Guardian has been deleted.", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("Guardian has been deleted.", HttpStatus.OK);
     }
 }

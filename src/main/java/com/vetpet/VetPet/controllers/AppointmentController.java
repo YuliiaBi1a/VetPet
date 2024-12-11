@@ -38,16 +38,14 @@ public class AppointmentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseAppointmentDto> updateAppointment(
-            @PathVariable Long id,
-            @RequestBody RequestAppointmentDto dto) {
+    public ResponseEntity<ResponseAppointmentDto> updateAppointment(@PathVariable Long id, @RequestBody RequestAppointmentDto dto) {
         ResponseAppointmentDto updatedAppointment = appointmentService.updateAppointment(id, dto);
         return new ResponseEntity<>(updatedAppointment, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAppointment(@PathVariable Long id) {
+    public ResponseEntity<String> deleteAppointment(@PathVariable Long id) {
         appointmentService.deleteAppointment(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("Appointment has been deleted.",HttpStatus.OK);
     }
 }
