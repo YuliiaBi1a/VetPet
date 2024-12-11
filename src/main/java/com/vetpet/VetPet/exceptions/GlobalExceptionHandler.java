@@ -27,4 +27,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleBadRequest(NoIdFoundBadRequestException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(DependencyException.class)
+    public ResponseEntity<String> handleDependencyExist(DependencyException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(NoNameFoundException.class)
+    public ResponseEntity<String> handleNotFoundName(NoNameFoundException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
 }

@@ -3,10 +3,9 @@ package com.vetpet.VetPet.services;
 import com.vetpet.VetPet.dto.RequestGuardianDto;
 import com.vetpet.VetPet.dto.ResponseGuardianDto;
 import com.vetpet.VetPet.entity.Guardian;
-import com.vetpet.VetPet.exceptions.DuplicatePhoneException;
-import com.vetpet.VetPet.exceptions.NoIdFoundException;
-import com.vetpet.VetPet.exceptions.NoRegistersFoundException;
+import com.vetpet.VetPet.exceptions.*;
 import com.vetpet.VetPet.repository.GuardianRepository;
+import com.vetpet.VetPet.repository.PetRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +16,11 @@ import java.util.stream.Collectors;
 public class GuardianServices {
 
     private final GuardianRepository GUARDIAN_REPOSITORY;
+    private final PetRepository PET_REPOSITORY;
 
-    public GuardianServices(GuardianRepository guardianRepository) {
+    public GuardianServices(GuardianRepository guardianRepository, PetRepository petRepository) {
         this.GUARDIAN_REPOSITORY = guardianRepository;
+        this.PET_REPOSITORY = petRepository;
     }
 
     // POST
@@ -53,6 +54,16 @@ public class GuardianServices {
         return ResponseGuardianDto.fromEntity(guardian);
     }
 
+    // GET: search guardian like name
+    public List<ResponseGuardianDto> searchByName(String name) {
+        List<Guardian> guardianList = GUARDIAN_REPOSITORY.findLikeName(name);
+        if (guardianList.isEmpty()) {
+            throw new NoNameFoundException(name);
+        }
+        return guardianList.stream()
+                .map(ResponseGuardianDto::fromEntity).toList();
+    }
+
     // PUT: Update guardian
     public ResponseGuardianDto updateGuardian(Long id, RequestGuardianDto request) {
         Guardian existingGuardian = GUARDIAN_REPOSITORY.findById(id)
@@ -68,16 +79,16 @@ public class GuardianServices {
         return ResponseGuardianDto.fromEntity(updatedGuardian);
     }
 
-    // DELETE: Delete guardian by ID
+    // DELETE: Delete guardian by ID si no tiene dependencias de Pet
     public void deleteGuardianById(Long id) {
         Guardian guardian = GUARDIAN_REPOSITORY.findById(id)
                 .orElseThrow(() -> new NoIdFoundException(id));
-        GUARDIAN_REPOSITORY.deleteById(id);
-    }
 
-    public List<ResponseGuardianDto> searchByName(String name) {
-        List<Guardian> guardianList = GUARDIAN_REPOSITORY.findLikeName(name);
-        return guardianList.stream()
-                .map(ResponseGuardianDto::fromEntity).toList();
+        boolean hasPets = PET_REPOSITORY.existsByGuardianId(id);
+        if (hasPets) {
+            throw new DependencyException(id);
+        }
+
+        GUARDIAN_REPOSITORY.deleteById(id);
     }
 }
