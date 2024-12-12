@@ -7,6 +7,8 @@ import com.vetpet.VetPet.entity.Guardian;
 import com.vetpet.VetPet.entity.Pet;
 import com.vetpet.VetPet.exceptions.NoIdFoundBadRequestException;
 import com.vetpet.VetPet.exceptions.NoIdFoundException;
+
+import com.vetpet.VetPet.exceptions.NoPetsFoundException;
 import com.vetpet.VetPet.exceptions.NoRegistersFoundException;
 import com.vetpet.VetPet.repository.PetRepository;
 import com.vetpet.VetPet.repository.GuardianRepository;
@@ -65,7 +67,7 @@ public class PetService {
         existingPet.setName(request.name());
         existingPet.setAge(request.age());
         existingPet.setBreed(request.breed());
-        existingPet.setClass_species(request.class_species());
+        existingPet.setClass_species(request.species());
         existingPet.setGuardian(guardian);
 
         Pet updatedPet = PET_REPOSITORY.save(existingPet);
@@ -78,4 +80,17 @@ public class PetService {
                 .orElseThrow(() -> new NoIdFoundException(id));
         PET_REPOSITORY.deleteById(id);
     }
+
+    public List<ResponsePetDto> findPetsByGuardianId(Long guardianId) {
+        List<Pet> pets = PET_REPOSITORY.findByGuardianId(guardianId);
+        if (pets.isEmpty()) {
+            throw new NoPetsFoundException(guardianId);
+        }
+        return pets.stream()
+                .map(ResponsePetDto::fromEntity)
+                .toList();
+
+
+
+}
 }

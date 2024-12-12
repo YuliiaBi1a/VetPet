@@ -42,6 +42,12 @@ public class PetController {
         return new ResponseEntity<>(pet, HttpStatus.OK);
     }
 
+    @GetMapping(params = "guardianId")
+    public ResponseEntity<List<ResponsePetDto>> getPetsByGuardianId(@RequestParam Long guardianId) {
+        List<ResponsePetDto> pets = PET_SERVICES.findPetsByGuardianId(guardianId);
+        return new ResponseEntity<>(pets, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<ResponsePetDto> createPet(@Valid @RequestBody RequestPetDto requestPet) {
         ResponsePetDto newPet = PET_SERVICES.createPet(requestPet);

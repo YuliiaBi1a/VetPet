@@ -42,6 +42,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(NoPetsFoundException.class)
+    public ResponseEntity<String> handleNotFoundName(NoPetsFoundException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String,String>>handleNotValidException(MethodArgumentNotValidException exception){
         Map<String, String> errors = new HashMap<>();

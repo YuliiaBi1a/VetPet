@@ -18,10 +18,10 @@ public record RequestPetDto (
 
         @NotBlank(message = "Name can not be empty")
         @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Specie musn't have numbers")
-        String class_species,
+        String species,
 
         Long guardianId) {
 public Pet toEntity(Guardian guardian){
-    return new Pet(this.name, this.age, this.breed, this.class_species, guardian);
+    return new Pet(this.name, this.age, this.breed, this.species, guardian);
 }
 }
