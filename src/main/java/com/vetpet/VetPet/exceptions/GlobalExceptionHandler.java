@@ -35,4 +35,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleNotFoundName(NoNameFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(NoPetsFoundException.class)
+    public ResponseEntity<String> handleNotFoundName(NoPetsFoundException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
 }
