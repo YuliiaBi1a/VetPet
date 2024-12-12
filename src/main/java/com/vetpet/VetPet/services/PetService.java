@@ -7,6 +7,8 @@ import com.vetpet.VetPet.entity.Guardian;
 import com.vetpet.VetPet.entity.Pet;
 import com.vetpet.VetPet.exceptions.NoIdFoundBadRequestException;
 import com.vetpet.VetPet.exceptions.NoIdFoundException;
+
+import com.vetpet.VetPet.exceptions.NoPetsFoundException;
 import com.vetpet.VetPet.exceptions.NoRegistersFoundException;
 import com.vetpet.VetPet.repository.PetRepository;
 import com.vetpet.VetPet.repository.GuardianRepository;
@@ -78,4 +80,17 @@ public class PetService {
                 .orElseThrow(() -> new NoIdFoundException(id));
         PET_REPOSITORY.deleteById(id);
     }
+
+    public List<ResponsePetDto> findPetsByGuardianId(Long guardianId) {
+        List<Pet> pets = PET_REPOSITORY.findByGuardianId(guardianId);
+        if (pets.isEmpty()) {
+            throw new NoPetsFoundException(guardianId);
+        }
+        return pets.stream()
+                .map(ResponsePetDto::fromEntity)
+                .toList();
+
+
+
+}
 }
