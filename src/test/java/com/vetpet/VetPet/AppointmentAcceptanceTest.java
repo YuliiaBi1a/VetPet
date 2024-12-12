@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -138,6 +139,8 @@ public class AppointmentAcceptanceTest {
         appointment.setPet(testPet);
         appointmentRepository.save(appointment);
 
+        assertNotNull(appointment.getId(), "Appointment ID should not be null");
+
         RequestAppointmentDto updateRequest = new RequestAppointmentDto(
                 LocalDate.of(2024, 4, 16),
                 LocalTime.of(14, 0),
@@ -145,7 +148,9 @@ public class AppointmentAcceptanceTest {
                 testPet.getId()
         );
 
-        mockMvc.perform(put("/appointments/" + appointment.getId())
+        assertNotNull(testPet.getId(), "Pet ID should not be null");
+
+        mockMvc.perform(put("/api/appointments/" + appointment.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isOk())
