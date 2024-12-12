@@ -24,7 +24,7 @@ public class AppointmentController {
         ResponseAppointmentDto createdAppointment = appointmentService.createAppointment(dto);
         return new ResponseEntity<>(createdAppointment, HttpStatus.CREATED);
     }
-
+//GET//
     @GetMapping("/{id}")
     public ResponseEntity<ResponseAppointmentDto> getAppointmentById(@PathVariable Long id) {
         ResponseAppointmentDto appointment = appointmentService.getAppointmentById(id);
@@ -37,6 +37,18 @@ public class AppointmentController {
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 
+    @GetMapping("/next")
+    public ResponseEntity<List<ResponseAppointmentDto>> getNextAppointmentsByPetId(@RequestParam Long petId) {
+        List<ResponseAppointmentDto> nextAppointments = appointmentService.getNextAppointmentsByPetId(petId);
+        return new ResponseEntity<>(nextAppointments, HttpStatus.OK);
+    }
+
+    @GetMapping("/past")
+    public ResponseEntity<List<ResponseAppointmentDto>> getPastAppointmentsByPetId(@RequestParam Long petId) {
+        List<ResponseAppointmentDto> pastAppointments = appointmentService.getPastAppointmentsByPetId(petId);
+        return new ResponseEntity<>(pastAppointments, HttpStatus.OK);
+    }
+//UPDATE//
     @PutMapping("/{id}")
     public ResponseEntity<ResponseAppointmentDto> updateAppointment(@PathVariable Long id, @RequestBody RequestAppointmentDto dto) {
         ResponseAppointmentDto updatedAppointment = appointmentService.updateAppointment(id, dto);
@@ -46,6 +58,6 @@ public class AppointmentController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteAppointment(@PathVariable Long id) {
         appointmentService.deleteAppointment(id);
-        return new ResponseEntity<>("Appointment has been deleted.",HttpStatus.OK);
+        return new ResponseEntity<>("Appointment has been deleted.",HttpStatus.NO_CONTENT);
     }
 }

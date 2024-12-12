@@ -9,6 +9,8 @@ import com.vetpet.VetPet.exceptions.NoRegistersFoundException;
 import com.vetpet.VetPet.repository.AppointmentRepository;
 import com.vetpet.VetPet.repository.PetRepository;
 import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 import java.util.List;
 
@@ -50,6 +52,30 @@ public class AppointmentService {
         return appointments.stream()
                 .map(this::mapToResponseDto)
                 .toList();
+    }
+
+    //GET NEXT
+    public List<ResponseAppointmentDto> getNextAppointmentsByPetId(Long petId) {
+        LocalDateTime now = LocalDateTime.now();
+        List<Appointment> nextAppointments = appointmentRepository.findByPetId(petId).stream()
+                .filter(appointment -> appointment.getDate().atTime(appointment.getTime()).isAfter(now))
+                .toList();
+
+        return nextAppointments.stream()
+                .map(this::mapToResponseDto)
+                .toList();
+    }
+
+    //GET PAST
+    public List<ResponseAppointmentDto> getPastAppointmentsByPetId(Long petId) {
+        LocalDateTime now = LocalDateTime.now();
+        List<Appointment> pastAppointments = appointmentRepository.findByPetId(petId).stream()
+                .filter(appointment -> appointment.getDate().atTime(appointment.getTime()).isBefore(now))
+                .toList();
+
+        return pastAppointments.stream()
+                .map(this::mapToResponseDto)
+                .collect(Collectors.toList());
     }
 
     //PUT
