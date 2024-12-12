@@ -63,8 +63,8 @@ public class PetAcceptanceTest {
                 .andExpect(jsonPath("$.name", is("Buddy")))
                 .andExpect(jsonPath("$.age", is(3)))
                 .andExpect(jsonPath("$.breed", is("Labrador")))
-                .andExpect(jsonPath("$.class_species", is("Dog")))
-                .andExpect(jsonPath("$.tutor.id", is(testGuardian.getId().intValue())));
+                .andExpect(jsonPath("$.species", is("Dog")))
+                .andExpect(jsonPath("$.guardian.id", is(testGuardian.getId().intValue())));
     }
 
 

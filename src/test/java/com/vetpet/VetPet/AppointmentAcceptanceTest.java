@@ -150,7 +150,7 @@ public class AppointmentAcceptanceTest {
 
         assertNotNull(testPet.getId(), "Pet ID should not be null");
 
-        mockMvc.perform(put("/api/appointments/" + appointment.getId())
+        mockMvc.perform(put("/appointments/" + appointment.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isOk())

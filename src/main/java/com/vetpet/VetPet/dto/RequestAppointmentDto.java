@@ -20,7 +20,7 @@ public record RequestAppointmentDto(
 
         @NotBlank(message = "Reason cannot be blank")
         @Size(max = 255, message = "Reason must be less than 255 characters")
-        @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "Reason must contain only letters and spaces")
+        @Pattern(regexp = "^[a-zA-Z\\s\\p{Punct}]+$", message = "Reason must contain only letters and spaces")
         String reason,
 
         Long petId
