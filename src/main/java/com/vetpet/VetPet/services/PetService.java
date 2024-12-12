@@ -67,7 +67,7 @@ public class PetService {
         existingPet.setName(request.name());
         existingPet.setAge(request.age());
         existingPet.setBreed(request.breed());
-        existingPet.setClass_species(request.class_species());
+        existingPet.setClass_species(request.species());
         existingPet.setGuardian(guardian);
 
         Pet updatedPet = PET_REPOSITORY.save(existingPet);

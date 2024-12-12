@@ -10,6 +10,7 @@ import com.vetpet.VetPet.entity.Pet;
 import com.vetpet.VetPet.repository.PetRepository;
 import com.vetpet.VetPet.repository.GuardianRepository;
 import com.vetpet.VetPet.services.PetService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,13 +49,13 @@ public class PetController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponsePetDto> createPet(@RequestBody RequestPetDto requestPet) {
+    public ResponseEntity<ResponsePetDto> createPet(@Valid @RequestBody RequestPetDto requestPet) {
         ResponsePetDto newPet = PET_SERVICES.createPet(requestPet);
         return new ResponseEntity<>(newPet, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponsePetDto> updatePet(@PathVariable Long id, @RequestBody RequestPetDto request) {
+    public ResponseEntity<ResponsePetDto> updatePet(@PathVariable Long id, @Valid @RequestBody RequestPetDto request) {
         ResponsePetDto updatePet = PET_SERVICES.updatePet(id, request);
         return new ResponseEntity<>(updatePet, HttpStatus.OK);
     }
