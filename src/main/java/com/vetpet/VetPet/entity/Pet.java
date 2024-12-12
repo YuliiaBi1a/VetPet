@@ -27,7 +27,12 @@ public class Pet {
     public Pet(String name, int age, String breed, String class_species, Guardian guardian) {
         this.name = name;
         this.age = age;
-        this.breed = breed;
+        //FIX
+        if(breed.isEmpty() && breed.isBlank()){
+            this.breed ="Sin especificar";
+        }else {
+            this.breed = breed;
+        }
         this.class_species = class_species;
         this.guardian = guardian;
     }

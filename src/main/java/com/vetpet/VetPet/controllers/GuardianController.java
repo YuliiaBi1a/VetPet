@@ -4,6 +4,7 @@ import com.vetpet.VetPet.dto.RequestGuardianDto;
 import com.vetpet.VetPet.dto.ResponseGuardianDto;
 import com.vetpet.VetPet.entity.Guardian;
 import com.vetpet.VetPet.services.GuardianServices;
+import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class GuardianController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseGuardianDto> saveNewGuardian(@RequestBody RequestGuardianDto requestGuardian) {
+    public ResponseEntity<ResponseGuardianDto> saveNewGuardian(@Valid @RequestBody RequestGuardianDto requestGuardian) {
         ResponseGuardianDto newGuardian = GUARDIAN_SERVICES.createGuardian(requestGuardian);
         return new ResponseEntity<>(newGuardian, HttpStatus.CREATED);
     }
@@ -44,7 +45,7 @@ public class GuardianController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseGuardianDto> updateGuardianById(@PathVariable Long id, @RequestBody RequestGuardianDto request) {
+    public ResponseEntity<ResponseGuardianDto> updateGuardianById(@PathVariable Long id, @Valid @RequestBody RequestGuardianDto request) {
         ResponseGuardianDto updatedGuardian = GUARDIAN_SERVICES.updateGuardian(id, request);
         return new ResponseEntity<>(updatedGuardian, HttpStatus.OK);
     }

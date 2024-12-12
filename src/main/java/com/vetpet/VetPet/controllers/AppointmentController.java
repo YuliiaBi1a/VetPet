@@ -3,6 +3,7 @@ package com.vetpet.VetPet.controllers;
 import com.vetpet.VetPet.dto.RequestAppointmentDto;
 import com.vetpet.VetPet.dto.ResponseAppointmentDto;
 import com.vetpet.VetPet.services.AppointmentService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class AppointmentController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseAppointmentDto> createAppointment(@RequestBody RequestAppointmentDto dto) {
+    public ResponseEntity<ResponseAppointmentDto> createAppointment(@Valid @RequestBody RequestAppointmentDto dto) {
         ResponseAppointmentDto createdAppointment = appointmentService.createAppointment(dto);
         return new ResponseEntity<>(createdAppointment, HttpStatus.CREATED);
     }
@@ -38,7 +39,7 @@ public class AppointmentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseAppointmentDto> updateAppointment(@PathVariable Long id, @RequestBody RequestAppointmentDto dto) {
+    public ResponseEntity<ResponseAppointmentDto> updateAppointment(@PathVariable Long id, @Valid @RequestBody RequestAppointmentDto dto) {
         ResponseAppointmentDto updatedAppointment = appointmentService.updateAppointment(id, dto);
         return new ResponseEntity<>(updatedAppointment, HttpStatus.OK);
     }
