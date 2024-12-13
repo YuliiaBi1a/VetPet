@@ -1,3 +1,5 @@
+[CI](https://github.com/LaFamiliaPaulinchi/VetPet/actions/workflows/ci.yml/badge.svg)
+
 # 🐾 <span style="color: #32CD32;">**Proyecto Clínica Veterinaria API REST**
 
 ## 📖 Índice
