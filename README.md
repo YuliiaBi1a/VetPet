@@ -24,11 +24,11 @@ Este proyecto es una API REST desarrollada en Java Spring Boot para gestionar lo
     - Eliminar una mascota por su ID.
   
 - 👩‍⚕️ **<span style="color:pink;">Gestión de Tutores**
-    - Registrar un nuevo tutor.
+    - Registrar un nuevo guardian.
     - Listar todos los tutores.
-    - Buscar un tutor por su ID.
-    - Actualizar los datos de un tutor.
-    - Eliminar un tutor por su ID.
+    - Buscar un guardian por su ID.
+    - Actualizar los datos de un guardian.
+    - Eliminar un guardian por su ID.
 
 - ✍️ **<span style="color:pink;">Gestión de Citas**
 
@@ -56,11 +56,11 @@ Este proyecto es una API REST desarrollada en Java Spring Boot para gestionar lo
 | **POST**   | `/api/pets`            | Registrar una nueva mascota.                |
 | **PUT**    | `/api/pets/{id}`       | Actualizar datos de una mascota.            |
 | **DELETE** | `/api/pets/{id}`       | Eliminar una mascota específica.            |
-| **GET**    | `/api/tutors`          | Obtener todos los tutores.                  |
-| **GET**    | `/api/tutors/{id}`     | Obtener un tutor específico.                |
-| **POST**   | `/api/tutors`          | Registrar un nuevo tutor.                   |
-| **PUT**    | `/api/tutors/{id}`     | Actualizar datos de un tutor.               |
-| **DELETE** | `/api/tutors/{id}`     | Eliminar un tutor específico.               |
+| **GET**    | `/api/guardians`          | Obtener todos los tutores.                  |
+| **GET**    | `/api/guardians/{id}`     | Obtener un guardian específico.                |
+| **POST**   | `/api/guardians`          | Registrar un nuevo guardian.                   |
+| **PUT**    | `/api/guardians/{id}`     | Actualizar datos de un guardian.               |
+| **DELETE** | `/api/guardians/{id}`     | Eliminar un guardian específico.               |
 | **POST**   | `/api/appointments`    | Registrar una nueva cita.                   |
 | **GET**    | `/api/appointments`    | Listar todas las citas.                     |
 | **GET**    | `/api/appointments/{id}` | Obtener una cita específica.                |

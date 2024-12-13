@@ -2,7 +2,7 @@ package com.vetpet.VetPet.exceptions;
 
 public class DuplicatePhoneException extends AppException {
 
-    public DuplicatePhoneException(int phoneNumber) {
-        super("Phone number " + phoneNumber + " already exists");
+    public DuplicatePhoneException(String phone) {
+        super("Phone number " + phone + " already exists");
     }
 }

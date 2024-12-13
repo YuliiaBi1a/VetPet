@@ -5,9 +5,12 @@ import com.vetpet.VetPet.dto.ResponseAppointmentDto;
 import com.vetpet.VetPet.entity.Appointment;
 import com.vetpet.VetPet.entity.Pet;
 import com.vetpet.VetPet.exceptions.NoIdFoundException;
+import com.vetpet.VetPet.exceptions.NoRegistersFoundException;
 import com.vetpet.VetPet.repository.AppointmentRepository;
 import com.vetpet.VetPet.repository.PetRepository;
 import org.springframework.stereotype.Service;
+import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 import java.util.List;
 
@@ -22,52 +25,81 @@ public class AppointmentService {
         this.petRepository = petRepository;
     }
 
-    public ResponseAppointmentDto createAppointment(RequestAppointmentDto dto) {
-        Pet pet = petRepository.findById(dto.petId())
-                .orElseThrow(() -> new NoIdFoundException(dto.petId()));
+    //POST
+    public ResponseAppointmentDto createAppointment(RequestAppointmentDto req) {
+        Pet pet = petRepository.findById(req.petId())
+                .orElseThrow(() -> new NoIdFoundException(req.petId()));
 
-        Appointment appointment = new Appointment();
-        appointment.setDate(dto.date());
-        appointment.setTime(dto.time());
-        appointment.setReason(dto.reason());
-        appointment.setPet(pet);
-
-        Appointment savedAppointment = appointmentRepository.save(appointment);
+        Appointment newAppointment = req.toEntity(pet);
+        Appointment savedAppointment = appointmentRepository.save(newAppointment);
         return mapToResponseDto(savedAppointment);
     }
 
+    //GET
     public ResponseAppointmentDto getAppointmentById(Long id) {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new NoIdFoundException(id));
         return mapToResponseDto(appointment);
     }
 
+    //GET
     public List<ResponseAppointmentDto> getAllAppointments() {
-        return appointmentRepository.findAll().stream()
+        List<Appointment> appointments = appointmentRepository.findAll();
+        if (appointments.isEmpty()) {
+            throw new NoRegistersFoundException();
+        }
+
+        return appointments.stream()
                 .map(this::mapToResponseDto)
                 .toList();
     }
 
-    public ResponseAppointmentDto updateAppointment(Long id, RequestAppointmentDto dto) {
-        Appointment appointment = appointmentRepository.findById(id)
+    //GET NEXT
+    public List<ResponseAppointmentDto> getNextAppointmentsByPetId(Long petId) {
+        LocalDateTime now = LocalDateTime.now();
+        List<Appointment> nextAppointments = appointmentRepository.findByPetId(petId).stream()
+                .filter(appointment -> appointment.getDate().atTime(appointment.getTime()).isAfter(now))
+                .toList();
+
+        return nextAppointments.stream()
+                .map(this::mapToResponseDto)
+                .toList();
+    }
+
+    //GET PAST
+    public List<ResponseAppointmentDto> getPastAppointmentsByPetId(Long petId) {
+        LocalDateTime now = LocalDateTime.now();
+        List<Appointment> pastAppointments = appointmentRepository.findByPetId(petId).stream()
+                .filter(appointment -> appointment.getDate().atTime(appointment.getTime()).isBefore(now))
+                .toList();
+
+        return pastAppointments.stream()
+                .map(this::mapToResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    //PUT
+    public ResponseAppointmentDto updateAppointment(Long id, RequestAppointmentDto req) {
+        Appointment existingAppointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new NoIdFoundException(id));
 
-        Pet pet = petRepository.findById(dto.petId())
-                .orElseThrow(() -> new NoIdFoundException(dto.petId()));
+        Pet pet = petRepository.findById(req.petId())
+                .orElseThrow(() -> new NoIdFoundException(req.petId()));
 
-        appointment.setDate(dto.date());
-        appointment.setTime(dto.time());
-        appointment.setReason(dto.reason());
-        appointment.setPet(pet);
+        existingAppointment.setDate(req.date());
+        existingAppointment.setTime(req.time());
+        existingAppointment.setReason(req.reason());
+        existingAppointment.setPet(pet);
 
-        Appointment updatedAppointment = appointmentRepository.save(appointment);
+        Appointment updatedAppointment = appointmentRepository.save(existingAppointment);
         return mapToResponseDto(updatedAppointment);
     }
 
+    //DELETE
     public void deleteAppointment(Long id) {
         Appointment appointment = appointmentRepository.findById(id)
                 .orElseThrow(() -> new NoIdFoundException(id));
-        appointmentRepository.delete(appointment);
+        appointmentRepository.deleteById(id);
     }
 
     private ResponseAppointmentDto mapToResponseDto(Appointment appointment) {

@@ -25,4 +25,10 @@ public class Appointment {
     @JoinColumn(name = "pet_id", nullable = false)
     private Pet pet;
 
+    public Appointment(LocalDate date, LocalTime time, String reason, Pet pet) {
+        this.date = date;
+        this.time = time;
+        this.reason = reason;
+        this.pet = pet;
+    }
 }

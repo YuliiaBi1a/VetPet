@@ -2,55 +2,67 @@ package com.vetpet.VetPet.controllers;
 
 import com.vetpet.VetPet.dto.RequestPetDto;
 
+import com.vetpet.VetPet.dto.ResponseAppointmentDto;
+import com.vetpet.VetPet.dto.ResponseGuardianDto;
+import com.vetpet.VetPet.dto.ResponsePetDto;
 import com.vetpet.VetPet.entity.Pet;
 
 import com.vetpet.VetPet.repository.PetRepository;
-import com.vetpet.VetPet.repository.TutorRepository;
+import com.vetpet.VetPet.repository.GuardianRepository;
 import com.vetpet.VetPet.services.PetService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/pets")
+@RequestMapping("/pets")
 public class PetController {
     private final PetRepository PET_REPOSITORY;
-    private final TutorRepository TUTOR_REPOSITORY;
+    private final GuardianRepository GUARDIAN_REPOSITORY;
     private final PetService PET_SERVICES;
 
-    public PetController(PetRepository petRepository, TutorRepository tutorRepository, PetService petServices) {
+    public PetController(PetRepository petRepository, GuardianRepository guardianRepository, PetService petServices) {
         PET_REPOSITORY = petRepository;
-        TUTOR_REPOSITORY = tutorRepository;
+        GUARDIAN_REPOSITORY = guardianRepository;
         PET_SERVICES = petServices;
     }
 
     @GetMapping
-    public ResponseEntity<?> getPetList() {
-        return new ResponseEntity<>(PET_SERVICES.findAllPets(), HttpStatus.OK);
+    public ResponseEntity<List<ResponsePetDto>> getPetList() {
+        List<ResponsePetDto> pets = PET_SERVICES.findAllPets();
+        return new ResponseEntity<>(pets, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPetById(@PathVariable Long id) {
-        return new ResponseEntity<>(PET_SERVICES.findPetById(id), HttpStatus.OK);
+    public ResponseEntity<ResponsePetDto> getPetById(@PathVariable Long id) {
+        ResponsePetDto pet = PET_SERVICES.findPetById(id);
+        return new ResponseEntity<>(pet, HttpStatus.OK);
+    }
+
+    @GetMapping(params = "guardianId")
+    public ResponseEntity<List<ResponsePetDto>> getPetsByGuardianId(@RequestParam Long guardianId) {
+        List<ResponsePetDto> pets = PET_SERVICES.findPetsByGuardianId(guardianId);
+        return new ResponseEntity<>(pets, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<?> createPet(@RequestBody RequestPetDto requestPetDto) {
-        Pet newPet = PET_SERVICES.createPet(requestPetDto);
+    public ResponseEntity<ResponsePetDto> createPet(@Valid @RequestBody RequestPetDto requestPet) {
+        ResponsePetDto newPet = PET_SERVICES.createPet(requestPet);
         return new ResponseEntity<>(newPet, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updatePet(@PathVariable Long id, @RequestBody RequestPetDto petDto) {
-        return new ResponseEntity<>(PET_SERVICES.updatePet(id, petDto), HttpStatus.OK);
+    public ResponseEntity<ResponsePetDto> updatePet(@PathVariable Long id, @Valid @RequestBody RequestPetDto request) {
+        ResponsePetDto updatePet = PET_SERVICES.updatePet(id, request);
+        return new ResponseEntity<>(updatePet, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePetById(@PathVariable Long id) {
+    public ResponseEntity<String> deletePetById(@PathVariable Long id) {
         PET_SERVICES.deletePetById(id);
-        return new ResponseEntity<>("Pet has been deleted.", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("Pet has been deleted.", HttpStatus.OK);
     }
 }
