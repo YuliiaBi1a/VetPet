@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
@@ -20,6 +21,7 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class PetAcceptanceTest {
@@ -40,8 +42,6 @@ public class PetAcceptanceTest {
 
     @BeforeEach
     void setUp() {
-        petRepository.deleteAll();
-        guardianRepository.deleteAll();
 
         testGuardian = new Guardian();
         testGuardian.setName("John");
