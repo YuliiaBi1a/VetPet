@@ -3,9 +3,9 @@ spring:
 #    DENTRO DE CONTENEDOR DOCKER
 #    url: jdbc:postgresql://db:5432/springboot_db
 #    FUERA DE CONTENEDOR DOCKER
-    url: jdbc:postgresql://localhost:5432/springboot_db
-    username: springboot_user
-    password: springboot_password
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
