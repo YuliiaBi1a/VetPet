@@ -1,5 +1,8 @@
 spring:
   datasource:
+#    DENTRO DE CONTENEDOR DOCKER
+#    url: jdbc:postgresql://db:5432/springboot_db
+#    FUERA DE CONTENEDOR DOCKER
     url: jdbc:postgresql://localhost:5432/springboot_db
     username: springboot_user
     password: springboot_password
