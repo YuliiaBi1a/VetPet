@@ -3,28 +3,29 @@ package com.vetpet.VetPet.services;
 import com.vetpet.VetPet.dto.RequestPetDto;
 import com.vetpet.VetPet.dto.ResponseGuardianDto;
 import com.vetpet.VetPet.dto.ResponsePetDto;
+import com.vetpet.VetPet.entity.Appointment;
 import com.vetpet.VetPet.entity.Guardian;
 import com.vetpet.VetPet.entity.Pet;
-import com.vetpet.VetPet.exceptions.NoIdFoundBadRequestException;
-import com.vetpet.VetPet.exceptions.NoIdFoundException;
+import com.vetpet.VetPet.exceptions.*;
 
-import com.vetpet.VetPet.exceptions.NoPetsFoundException;
-import com.vetpet.VetPet.exceptions.NoRegistersFoundException;
+import com.vetpet.VetPet.repository.AppointmentRepository;
 import com.vetpet.VetPet.repository.PetRepository;
 import com.vetpet.VetPet.repository.GuardianRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class PetService {
     private final PetRepository PET_REPOSITORY;
-
+    private final AppointmentRepository APPOINTMENT_REPOSITORY;
     private final GuardianRepository GUARDIAN_REPOSITORY;
 
-    public PetService(PetRepository petRepository, GuardianRepository guardianRepository) {
+    public PetService(PetRepository petRepository, AppointmentRepository appointmentRepository, GuardianRepository guardianRepository) {
         PET_REPOSITORY = petRepository;
+        APPOINTMENT_REPOSITORY = appointmentRepository;
         GUARDIAN_REPOSITORY = guardianRepository;
     }
 
@@ -75,11 +76,25 @@ public class PetService {
     }
 
     //DELETE
-    public void deletePetById(Long id){
+    public void deletePetById(Long id) {
+
         Pet pet = PET_REPOSITORY.findById(id)
                 .orElseThrow(() -> new NoIdFoundException(id));
+        List<Appointment> appointments = APPOINTMENT_REPOSITORY.findByPetId(id);
+
+        LocalDateTime now = LocalDateTime.now();
+        boolean hasNextAppointments = appointments.stream()
+                .anyMatch(appointment -> appointment.getDate()
+                        .atTime(appointment.getTime()).isAfter(now));
+
+        if (hasNextAppointments) {
+            throw new DependencyException(id);
+        }
+
+        APPOINTMENT_REPOSITORY.deleteAll(appointments);
         PET_REPOSITORY.deleteById(id);
     }
+
 
     public List<ResponsePetDto> findPetsByGuardianId(Long guardianId) {
         List<Pet> pets = PET_REPOSITORY.findByGuardianId(guardianId);
@@ -89,8 +104,5 @@ public class PetService {
         return pets.stream()
                 .map(ResponsePetDto::fromEntity)
                 .toList();
-
-
-
-}
+    }
 }
