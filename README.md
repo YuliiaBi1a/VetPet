@@ -21,6 +21,7 @@ Este proyecto es una API REST desarrollada en Java Spring Boot para gestionar lo
     - Registrar una nueva mascota.
     - Listar todas las mascotas.
     - Buscar una mascota por su ID.
+    - Buscar una mascota por ID del guardian.
     - Actualizar los datos de una mascota.
     - Eliminar una mascota por su ID.
   
@@ -54,6 +55,7 @@ Este proyecto es una API REST desarrollada en Java Spring Boot para gestionar lo
 |------------|------------------------|----------------------------------------------|
 | **GET**    | `/api/pets`            | Obtener todas las mascotas.                 |
 | **GET**    | `/api/pets/{id}`       | Obtener una mascota específica.             |
+| **GET**    | `/api//pets?guardianId=:id`       | Obtener una mascota específica por id del guardian.             |
 | **POST**   | `/api/pets`            | Registrar una nueva mascota.                |
 | **PUT**    | `/api/pets/{id}`       | Actualizar datos de una mascota.            |
 | **DELETE** | `/api/pets/{id}`       | Eliminar una mascota específica.            |
@@ -64,20 +66,23 @@ Este proyecto es una API REST desarrollada en Java Spring Boot para gestionar lo
 | **DELETE** | `/api/guardians/{id}`     | Eliminar un guardian específico.               |
 | **POST**   | `/api/appointments`    | Registrar una nueva cita.                   |
 | **GET**    | `/api/appointments`    | Listar todas las citas.                     |
+| **GET**    | `/api/appointments/next/next?petId=:id` | Obtener una cita actual.                |
+| **GET**    | `/api/appointments/past?petId=:id` | Obtener una cita que ha pasado.                |
 | **GET**    | `/api/appointments/{id}` | Obtener una cita específica.                |
 | **DELETE** | `/api/appointments/{id}` | Cancelar una cita.                          |
-            |
+| **GET**    | `/api//statistics/global` | Obtener statistic.                |
+            
 
 ### ✍️ <span style="color:magenta;">**Ejemplo de solicitud para registrar una mascota:**
-        ```json
-    POST /api/pets
-             {
-            "name": "Luna",
-            "age": 3,
-            "species": "Gato",
-             "tutorId": 1
-            }
-
+```json
+POST /api/pets
+{
+    "name": "Luna",
+    "age": 3,
+    "species": "Gato",
+    "tutorId": 1
+}
+```
 💻 <span style="color:blue;">Gestor de Citas
 1. 🔍 <span style="color:pink;">Registrar una cita
    Endpoint:
@@ -85,19 +90,19 @@ Este proyecto es una API REST desarrollada en Java Spring Boot para gestionar lo
 
 Request:
 
-    json
-    Copiar código
-    {
+```json
+
+{
     "date": "2024-04-15",
     "time": "15:30",
     "reason": "Vaccination",
     "petId": 1
-    }
+}
+```
 Response:
 
-    json
-    Copiar código
-    {
+```json
+{
     "id": 1,
     "date": "2024-04-15",
     "time": "15:30",
@@ -116,16 +121,16 @@ Response:
     "address": "123 Meadow Lane"
     }
     }
-    }
+}
+```
 2. 🎯 <span style="color:pink;">Obtener una cita por su ID
    Endpoint:
    GET /appointments/{id}
 
 Response:
 
-    json
-    Copiar código
-    {
+```json
+{
     "id": 1,
     "date": "2024-04-15",
     "time": "15:30",
@@ -144,16 +149,16 @@ Response:
     "address": "123 Meadow Lane"
     }
     }
-    }
+}
+```
 3.🎫 <span style="color:pink;"> Listar todas las citas
    Endpoint:
    GET /appointments
 
 Response:
 
-    json
-    Copiar código
-    [
+```json
+[
     {
     "id": 1,
     "date": "2024-04-15",
@@ -176,8 +181,8 @@ Response:
     "species": "cat"
     }
     }
-    ]
-
+]
+```
 
 ## 🛠️ <span style="color:blue;">Tecnologías Utilizadas</span>
 - <span style="color:green;">Java 17:</span> Lenguaje de programación principal.
@@ -214,14 +219,15 @@ Asegúrate de que tienes las dependencias necesarias instaladas (JUnit 5 y Sprin
 ### **Ejecutar Tests con Maven**
 Si estás usando Maven, puedes ejecutar los tests con el siguiente comando:
 
-    ```bash
+```bash
          mvn test
-
+```
 📖 <span style="color:magenta;">Uso
 
 Clonar el repositorio: bash
-
+```
     git clone https://github.com/<tu-repositorio>.git
+```
 Configurar el Backend: Dirígete al directorio backend/. Configura el archivo application.properties según tus necesidades.
 
 Ejecuta la aplicación Spring Boot:
@@ -313,7 +319,7 @@ Maven es una herramienta de gestión de proyectos y construcción que automatiza
           <properties><spring.profiles.active>dev</spring.profiles.active></properties>
       </profile>
   </profiles>
-  
+  ```
 
  ## <span style="color:blue;">Spring Boot
 Asegúrate de incluir el plugin en el pom.xml para empaquetar aplicaciones ejecutables:
