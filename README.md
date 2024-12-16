@@ -1,5 +1,4 @@
-[CI](https://github.com/LaFamiliaPaulinchi/VetPet/actions/workflows/ci.yml/badge.svg)
-
+![CI](https://github.com/LaFamiliaPaulinchi/VetPet/actions/workflows/ci.yml/badge.svg)
 # 🐾 <span style="color: #32CD32;">**Proyecto Clínica Veterinaria API REST**
 
 ## 📖 Índice
@@ -282,6 +281,95 @@ Este es el diagrama de la base de datos utilizada en el proyecto:
 
 
 ![image.png](src%2Fmain%2Fjava%2Fcom%2Fvetpet%2FVetPet%2Futil%2Fimage.png)
+
+
+## <span style="color:blue;"> **Uso de Maven en el Proyecto**
+
+Maven es una herramienta de gestión de proyectos y construcción que automatiza procesos como la compilación, pruebas, empaquetado y manejo de perfiles. A continuación, se resumen los comandos más importantes:
+
+### <span style="color:yellow;">**1. Compilación**
+- **Comando:** `mvn clean compile`
+- **Propósito:** Compilar el código fuente y generar archivos `.class` en `target/classes`.
+- **Resultado:** Verifica que no existan errores de compilación.
+
+### <span style="color:yellow;">**2. Pruebas**
+- **Comando:** `mvn test`
+- **Propósito:** Ejecutar pruebas unitarias definidas con frameworks como JUnit.
+- **Resultado:** Validar la funcionalidad del código.
+
+### <span style="color:yellow;">**3. Empaquetar Artefactos**
+- **Comando:** `mvn clean package`
+- **Propósito:** Crear un archivo `.jar` o `.war` en `target` para despliegue.
+- **Resultado:** Generar un artefacto listo para distribución.
+
+### <span style="color:yellow;">**4. Perfiles**
+- **Activar perfil:** `mvn clean package -P<perfil>`
+- **Propósito:** Usar configuraciones específicas (e.g., desarrollo, pruebas, producción).
+- **Definición en `pom.xml`:**
+  ```xml
+  <profiles>
+      <profile>
+          <id>dev</id>
+          <properties><spring.profiles.active>dev</spring.profiles.active></properties>
+      </profile>
+  </profiles>
+  
+
+ ## <span style="color:blue;">Spring Boot
+Asegúrate de incluir el plugin en el pom.xml para empaquetar aplicaciones ejecutables:
+    
+    <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+           <excludes>
+              <exclude>
+                 <groupId>org.projectlombok</groupId>
+                 <artifactId>lombok</artifactId>
+              </exclude>
+           </excludes>
+        </configuration>
+    </plugin>
+        
+
+### <span style="color:blue;">Gestión de Variables de Entorno y Perfiles en Spring Boot
+
+### <span style="color:yellow;">Configuración por Entornos
+Spring Boot utiliza perfiles (spring.profiles.active) para gestionar configuraciones específicas mediante archivos como application-dev.yml, application-test.yml o application-prod.yml.
+
+Activación de perfiles:
+En application.yml:
+
+        yaml
+
+        Copiar código
+        spring:
+        profiles:
+        active: dev
+Desde variables de entorno:
+
+        bash
+        Copiar código
+        export SPRING_PROFILES_ACTIVE=prod
+Desde línea de comandos:
+
+        bash
+        Copiar código
+        java -jar app.jar --spring.profiles.active=test
+
+### <span style="color:yellow;">Uso de Variables de Entorno
+En los archivos de configuración (application.yml), se pueden usar variables de entorno con la sintaxis ${VARIABLE:valor_por_defecto}:
+
+        yaml
+        Copiar código
+        spring:
+datasource:
+
+        url: ${DB_URL:jdbc:h2:mem:default}
+        username: ${DB_USERNAME:default_user}
+        password: ${DB_PASSWORD:default_pass}
+
+
 
 
 ## <span style="color: #32CD32;">🤝 Contribuidores
