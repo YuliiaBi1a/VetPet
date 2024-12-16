@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    #    DENTRO DE CONTENEDOR DOCKER
+    #    url: jdbc:postgresql://db:5432/springboot_db
+    #    FUERA DE CONTENEDOR DOCKER
+    url: jdbc:postgresql://localhost:5432/springboot_db
+    username: lafamiliapaulinchi
+    password: lafamiliapaulinchi
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
