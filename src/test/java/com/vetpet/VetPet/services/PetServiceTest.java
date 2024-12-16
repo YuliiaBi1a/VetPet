@@ -4,8 +4,10 @@ import com.vetpet.VetPet.dto.RequestGuardianDto;
 import com.vetpet.VetPet.dto.RequestPetDto;
 import com.vetpet.VetPet.dto.ResponseGuardianDto;
 import com.vetpet.VetPet.dto.ResponsePetDto;
+import com.vetpet.VetPet.entity.Appointment;
 import com.vetpet.VetPet.entity.Guardian;
 import com.vetpet.VetPet.entity.Pet;
+import com.vetpet.VetPet.repository.AppointmentRepository;
 import com.vetpet.VetPet.repository.GuardianRepository;
 import com.vetpet.VetPet.repository.PetRepository;
 import org.junit.jupiter.api.Test;
@@ -16,10 +18,14 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ActiveProfiles("test")
@@ -30,6 +36,9 @@ class PetServiceTest {
 
     @Mock
     GuardianRepository guardianRepository;
+
+    @Mock
+    AppointmentRepository appointmentRepository;
 
     @InjectMocks
     private PetService petService;
@@ -117,17 +126,25 @@ class PetServiceTest {
 
     // Test unitario para eliminar un Pet por ID
     @Test
-    void should_deletePetById() {
+    void should_deletePetById_when_noUpcomingAppointments() {
         // GIVEN
         Long petId = 1L;
-        Pet petToDelete = new Pet(petId, "Rex", 5, "Labrador", "Dog", new Guardian(1L, "John", "john@example.com", "123456789", "Torremolinos"));
+        Pet petToDelete = new Pet(petId, "Rex", 5, "Labrador", "Dog",
+                new Guardian(1L, "John", "john@example.com", "123456789", "Torremolinos"));
+
+        // Simulamos citas pasadas o vacías
+        List<Appointment> pastAppointments = List.of(
+                new Appointment(LocalDate.now().minusDays(5), LocalTime.of(10, 0), "Checkup", petToDelete)
+        );
 
         Mockito.when(petRepository.findById(petId)).thenReturn(Optional.of(petToDelete));
+        Mockito.when(appointmentRepository.findByPetId(petId)).thenReturn(pastAppointments);
 
         // WHEN
         petService.deletePetById(petId);
 
         // THEN
+        verify(appointmentRepository).findByPetId(petId);
         verify(petRepository).deleteById(petId);
     }
 

@@ -95,7 +95,6 @@ public class PetService {
         PET_REPOSITORY.deleteById(id);
     }
 
-
     public List<ResponsePetDto> findPetsByGuardianId(Long guardianId) {
         List<Pet> pets = PET_REPOSITORY.findByGuardianId(guardianId);
         if (pets.isEmpty()) {
